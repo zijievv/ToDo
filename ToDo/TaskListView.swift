@@ -60,15 +60,17 @@ struct TaskListView: View {
                     }
                     .listStyle(InsetListStyle())
 
-                    Button(action: { isAddingNewTask.toggle() }) {
-                        HStack {
-                            Image(systemName: "plus.circle.fill")
-                            Text("New Reminder")
+                    if !isAddingNewTask {
+                        Button(action: { isAddingNewTask.toggle() }) {
+                            HStack {
+                                Image(systemName: "plus.circle.fill")
+                                Text("New Reminder")
+                            }
+                            .font(.system(.headline, design: .rounded))
+                            .foregroundColor(Color(color))
                         }
-                        .font(.system(.headline, design: .rounded))
-                        .foregroundColor(Color(color))
+                        .padding([.leading, .bottom])
                     }
-                    .padding(.leading)
                 }
                 .navigationTitle("Reminder")
             }
