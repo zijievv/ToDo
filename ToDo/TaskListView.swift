@@ -11,14 +11,21 @@
 import SwiftUI
 
 struct TaskListView: View {
+    var tasks: [Task] = testTasksData
+    let color: Color = .blue
+
     var body: some View {
         GeometryReader { geometry in
             NavigationView {
                 VStack(alignment: .leading) {
                     ScrollView {
                         LazyVStack(alignment: .leading) {
-                            ForEach(0..<5) { _ in
-                                TaskCell()
+                            ForEach(self.tasks, id: \.id) { task in
+                                TaskCell(task: task)
+                            }
+                            .onDelete { indexSet in
+                                // TODO: delete
+                                print(indexSet)
                             }
                         }
                     }
@@ -29,7 +36,7 @@ struct TaskListView: View {
                             Text("New Reminder")
                         }
                         .font(.system(.headline, design: .rounded))
-                        .foregroundColor(.blue)
+                        .foregroundColor(self.color)
                     }
                 }
                 .padding(.leading)
@@ -44,15 +51,15 @@ struct TaskListView: View {
         }
     }
 
-    let navigationTitle: some View = {
+    var navigationTitle: some View {
         HStack {
             Text("Reminders")
                 .font(.system(.largeTitle, design: .rounded))
                 .fontWeight(.bold)
-                .foregroundColor(.blue)
+                .foregroundColor(color)
             Spacer()
         }
-    }()
+    }
 }
 
 struct ContentView_Previews: PreviewProvider {
@@ -62,24 +69,28 @@ struct ContentView_Previews: PreviewProvider {
 }
 
 struct TaskCell: View {
+    var task: Task
+
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             HStack {
 //                Image(systemName: "largecircle.fill.circle")
-                Image(systemName: "circle")
+                Image(systemName: task.completed ? "largecircle.fill.circle" : "circle")
                     .font(.system(Font.TextStyle.title3))
-                Text("Hello")
-                    .font(.system(.headline, design: .rounded))
-                    .fontWeight(.light)
+                    .foregroundColor(task.completed ? .blue : .gray)
+                    .onTapGesture {
+                        // TODO: completed sign
+                    }
+                Text(task.title)
             }
 
             HStack(alignment: .center) {
                 Image(systemName: "circle")
-                    .font(.system(Font.TextStyle.title3))
+//                    .font(.system(Font.TextStyle.title3))
                     .foregroundColor(.clear)
                 Rectangle()
                     .foregroundColor(.gray)
-                    .frame(height: 1)
+                    .frame(height: 0.7)
             }
         }
     }
