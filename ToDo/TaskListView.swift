@@ -27,13 +27,13 @@ struct TaskListView: View {
 
         // Use this if NavigationBarTitle is with Large Font
         UINavigationBar.appearance().largeTitleTextAttributes = [
-            .foregroundColor: self.color,
+            .foregroundColor: color,
             .font: font,
         ]
 
         // Use this if NavigationBarTitle is with displayMode = .inline
         UINavigationBar.appearance().titleTextAttributes = [
-            .foregroundColor: self.color,
+            .foregroundColor: color,
         ]
     }
 
@@ -42,22 +42,31 @@ struct TaskListView: View {
             NavigationView {
                 VStack(alignment: .leading) {
                     List {
-                        ForEach(self.taskListVM.taskCellViewModels) { vmTaskCell in
+                        ForEach(taskListVM.taskCellViewModels) { vmTaskCell in
                             TaskCell(taskCellVM: vmTaskCell)
                         }
                         .onDelete { indexSet in
-                            self.taskListVM.removeTask(atOffsets: indexSet)
+                            taskListVM.removeTask(atOffsets: indexSet)
+                        }
+
+                        if isAddingNewTask {
+                            TaskCell(taskCellVM: TaskCellViewModel.newTask()) { result in
+                                if case let .success(task) = result {
+                                    taskListVM.addTask(task)
+                                }
+                                isAddingNewTask.toggle()
+                            }
                         }
                     }
                     .listStyle(InsetListStyle())
 
-                    Button(action: {}) {
+                    Button(action: { isAddingNewTask.toggle() }) {
                         HStack {
                             Image(systemName: "plus.circle.fill")
                             Text("New Reminder")
                         }
                         .font(.system(.headline, design: .rounded))
-                        .foregroundColor(Color(self.color))
+                        .foregroundColor(Color(color))
                     }
                     .padding(.leading)
                 }
@@ -99,9 +108,9 @@ struct TaskCell: View {
 
                 TextField("New Reminder", text: $taskCellVM.task.title, onCommit: {
                     if !taskCellVM.task.title.isEmpty {
-                        self.onCommit(.success(taskCellVM.task))
+                        onCommit(.success(taskCellVM.task))
                     } else {
-                        self.onCommit(.failure(.empty))
+                        onCommit(.failure(.empty))
                     }
                 })
                     .id(taskCellVM.id)
