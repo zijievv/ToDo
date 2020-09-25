@@ -11,24 +11,45 @@
 import SwiftUI
 
 struct TaskListView: View {
-    var tasks: [Task] = testTasksData
-    let color: Color = .blue
+    @ObservedObject var taskListVM = TaskListViewModel()
+    @State var isAddingNewTask: Bool = false
+
+    let color: UIColor = .systemBlue
+
+    init() {
+        let weight = UIFontDescriptor.SymbolicTraits.traitBold
+        let design = UIFontDescriptor.SystemDesign.rounded
+        let descriptor = UIFontDescriptor
+            .preferredFontDescriptor(withTextStyle: .largeTitle)
+            .withDesign(design)!
+            .withSymbolicTraits(weight)!
+        let font = UIFont(descriptor: descriptor, size: 34)
+
+        // Use this if NavigationBarTitle is with Large Font
+        UINavigationBar.appearance().largeTitleTextAttributes = [
+            .foregroundColor: self.color,
+            .font: font,
+        ]
+
+        // Use this if NavigationBarTitle is with displayMode = .inline
+        UINavigationBar.appearance().titleTextAttributes = [
+            .foregroundColor: self.color,
+        ]
+    }
 
     var body: some View {
-        GeometryReader { geometry in
+        GeometryReader { _ in
             NavigationView {
                 VStack(alignment: .leading) {
-                    ScrollView {
-                        LazyVStack(alignment: .leading) {
-                            ForEach(self.tasks, id: \.id) { task in
-                                TaskCell(task: task)
-                            }
-                            .onDelete { indexSet in
-                                // TODO: delete
-                                print(indexSet)
-                            }
+                    List {
+                        ForEach(self.taskListVM.taskCellViewModels) { vmTaskCell in
+                            TaskCell(taskCellVM: vmTaskCell)
+                        }
+                        .onDelete { indexSet in
+                            self.taskListVM.removeTask(atOffsets: indexSet)
                         }
                     }
+                    .listStyle(InsetListStyle())
 
                     Button(action: {}) {
                         HStack {
@@ -36,17 +57,11 @@ struct TaskListView: View {
                             Text("New Reminder")
                         }
                         .font(.system(.headline, design: .rounded))
-                        .foregroundColor(self.color)
+                        .foregroundColor(Color(self.color))
                     }
+                    .padding(.leading)
                 }
-                .padding(.leading)
-                .toolbar {
-                    ToolbarItem(placement: .principal) {
-                        self.navigationTitle
-                            .padding()
-                            .frame(width: geometry.size.width)
-                    }
-                }
+                .navigationTitle("Reminder")
             }
         }
     }
@@ -56,7 +71,7 @@ struct TaskListView: View {
             Text("Reminders")
                 .font(.system(.largeTitle, design: .rounded))
                 .fontWeight(.bold)
-                .foregroundColor(color)
+                .foregroundColor(Color(color))
             Spacer()
         }
     }
@@ -69,29 +84,32 @@ struct ContentView_Previews: PreviewProvider {
 }
 
 struct TaskCell: View {
-    var task: Task
+    @ObservedObject var taskCellVM: TaskCellViewModel
+    var onCommit: (Result<Task, InputError>) -> Void = { _ in }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             HStack {
-//                Image(systemName: "largecircle.fill.circle")
-                Image(systemName: task.completed ? "largecircle.fill.circle" : "circle")
+                Image(systemName: taskCellVM.completionIcon.name)
                     .font(.system(Font.TextStyle.title3))
-                    .foregroundColor(task.completed ? .blue : .gray)
+                    .foregroundColor(taskCellVM.completionIcon.color)
                     .onTapGesture {
-                        // TODO: completed sign
+                        taskCellVM.task.completed.toggle()
                     }
-                Text(task.title)
-            }
 
-            HStack(alignment: .center) {
-                Image(systemName: "circle")
-//                    .font(.system(Font.TextStyle.title3))
-                    .foregroundColor(.clear)
-                Rectangle()
-                    .foregroundColor(.gray)
-                    .frame(height: 0.7)
+                TextField("New Reminder", text: $taskCellVM.task.title, onCommit: {
+                    if !taskCellVM.task.title.isEmpty {
+                        self.onCommit(.success(taskCellVM.task))
+                    } else {
+                        self.onCommit(.failure(.empty))
+                    }
+                })
+                    .id(taskCellVM.id)
             }
         }
     }
+}
+
+enum InputError: Error {
+    case empty
 }

@@ -10,6 +10,7 @@
 
 import Combine
 import Foundation
+import SwiftUI
 
 class TaskListViewModel: ObservableObject {
     @Published var taskCellViewModels: [TaskCellViewModel] = []
@@ -33,7 +34,7 @@ class TaskListViewModel: ObservableObject {
 
 class TaskCellViewModel: ObservableObject, Identifiable {
     @Published var task: Task
-    @Published var completionIconName: String = ""
+    @Published var completionIcon: (name: String, color: Color) = ("", .clear)
     var id: String = ""
 
     private var cancellables = Set<AnyCancellable>()
@@ -41,9 +42,12 @@ class TaskCellViewModel: ObservableObject, Identifiable {
     init(task: Task) {
         self.task = task
 
-        $task.map { $0.completed ? "largecircle.fill.circle" : "circle" }
-            .assign(to: \.completionIconName, on: self)
-            .store(in: &cancellables)
+        $task.map {
+            $0.completed ? ("largecircle.fill.circle", Color(UIColor.systemBlue)) :
+                ("circle", Color(UIColor.systemGray))
+        }
+        .assign(to: \.completionIcon, on: self)
+        .store(in: &cancellables)
 
         $task.map { $0.id }
             .assign(to: \.id, on: self)
