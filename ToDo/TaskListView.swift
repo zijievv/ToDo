@@ -17,23 +17,30 @@ struct TaskListView: View {
     let color: UIColor = .systemBlue
 
     init() {
-        let weight = UIFontDescriptor.SymbolicTraits.traitBold
         let design = UIFontDescriptor.SystemDesign.rounded
-        let descriptor = UIFontDescriptor
+
+        let largeWeight = UIFontDescriptor.SymbolicTraits.traitBold
+        let largeDescriptor = UIFontDescriptor
             .preferredFontDescriptor(withTextStyle: .largeTitle)
             .withDesign(design)!
-            .withSymbolicTraits(weight)!
-        let font = UIFont(descriptor: descriptor, size: 34)
+            .withSymbolicTraits(largeWeight)!
+        let largeFont = UIFont(descriptor: largeDescriptor, size: 34)
+
+        let inlineDescriptor = UIFontDescriptor
+            .preferredFontDescriptor(withTextStyle: .headline)
+            .withDesign(design)!
+        let inlineFont = UIFont(descriptor: inlineDescriptor, size: 20)
 
         // Use this if NavigationBarTitle is with Large Font
         UINavigationBar.appearance().largeTitleTextAttributes = [
             .foregroundColor: color,
-            .font: font,
+            .font: largeFont,
         ]
 
         // Use this if NavigationBarTitle is with displayMode = .inline
         UINavigationBar.appearance().titleTextAttributes = [
             .foregroundColor: color,
+            .font: inlineFont,
         ]
     }
 
@@ -69,10 +76,11 @@ struct TaskListView: View {
                             .font(.system(.headline, design: .rounded))
                             .foregroundColor(Color(color))
                         }
-                        .padding([.leading, .bottom])
+                        .padding()
                     }
                 }
                 .navigationTitle("Reminder")
+//                .navigationBarTitleDisplayMode(.inline)
             }
         }
     }
