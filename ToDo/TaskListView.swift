@@ -65,6 +65,7 @@ struct TaskListView: View {
                     }
                 }
                 .listStyle(InsetListStyle())
+                .listSeparatorStyle(.none)
 
                 if !isAddingNewTask {
                     Button(action: { isAddingNewTask.toggle() }) {
@@ -85,7 +86,12 @@ struct TaskListView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        TaskListView()
+        Group {
+            TaskListView()
+//            TaskListView()
+//                .previewDevice("iPhone SE (1st generation)")
+        }
+//        .environment(\.colorScheme, .dark)
     }
 }
 
@@ -96,24 +102,34 @@ struct TaskCell: View {
     var body: some View {
         HStack {
             Image(systemName: taskCellVM.completionIcon.name)
-                .font(.system(Font.TextStyle.title3))
+                .font(.system(Font.TextStyle.title2))
                 .foregroundColor(taskCellVM.completionIcon.color)
                 .onTapGesture {
                     taskCellVM.task.completed.toggle()
                 }
 
-            TextField("New Reminder", text: $taskCellVM.task.title, onCommit: {
-                if !taskCellVM.task.title.isEmpty {
-                    onCommit(.success(taskCellVM.task))
-                } else {
-                    onCommit(.failure(.empty))
-                }
-            })
-                .id(taskCellVM.id)
+            ZStack {
+                Rectangle()
+                    .foregroundColor(.gray)
+                    .opacity(0.2)
+                    .cornerRadius(10)
 
-            if taskCellVM.task.important {
-                Image(systemName: "star.fill")
-                    .foregroundColor(.orange)
+                HStack {
+                    TextField("New Reminder", text: $taskCellVM.task.title, onCommit: {
+                        if !taskCellVM.task.title.isEmpty {
+                            onCommit(.success(taskCellVM.task))
+                        } else {
+                            onCommit(.failure(.empty))
+                        }
+                    })
+                        .id(taskCellVM.id)
+
+                    if taskCellVM.task.important {
+                        Image(systemName: "star.fill")
+                            .foregroundColor(.orange)
+                    }
+                }
+                .padding(10)
             }
         }
     }
