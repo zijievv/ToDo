@@ -45,53 +45,40 @@ struct TaskListView: View {
     }
 
     var body: some View {
-        GeometryReader { _ in
-            NavigationView {
-                VStack(alignment: .leading) {
-                    List {
-                        ForEach(taskListVM.taskCellViewModels) { vmTaskCell in
-                            TaskCell(taskCellVM: vmTaskCell)
-                        }
-                        .onDelete { indexSet in
-                            taskListVM.removeTask(atOffsets: indexSet)
-                        }
-
-                        if isAddingNewTask {
-                            TaskCell(taskCellVM: TaskCellViewModel.newTask()) { result in
-                                if case let .success(task) = result {
-                                    taskListVM.addTask(task)
-                                }
-                                isAddingNewTask.toggle()
-                            }
-                        }
+        NavigationView {
+            VStack(alignment: .leading) {
+                List {
+                    ForEach(taskListVM.taskCellViewModels) { vmTaskCell in
+                        TaskCell(taskCellVM: vmTaskCell)
                     }
-                    .listStyle(InsetListStyle())
+                    .onDelete { indexSet in
+                        taskListVM.removeTask(atOffsets: indexSet)
+                    }
 
-                    if !isAddingNewTask {
-                        Button(action: { isAddingNewTask.toggle() }) {
-                            HStack {
-                                Image(systemName: "plus.circle.fill")
-                                Text("New Reminder")
+                    if isAddingNewTask {
+                        TaskCell(taskCellVM: TaskCellViewModel.newTask()) { result in
+                            if case let .success(task) = result {
+                                taskListVM.addTask(task)
                             }
-                            .font(.system(.headline, design: .rounded))
-                            .foregroundColor(Color(color))
+                            isAddingNewTask.toggle()
                         }
-                        .padding()
                     }
                 }
-                .navigationTitle("Reminder")
-//                .navigationBarTitleDisplayMode(.inline)
-            }
-        }
-    }
+                .listStyle(InsetListStyle())
 
-    var navigationTitle: some View {
-        HStack {
-            Text("Reminders")
-                .font(.system(.largeTitle, design: .rounded))
-                .fontWeight(.bold)
-                .foregroundColor(Color(color))
-            Spacer()
+                if !isAddingNewTask {
+                    Button(action: { isAddingNewTask.toggle() }) {
+                        HStack {
+                            Image(systemName: "plus.circle.fill")
+                            Text("New Reminder")
+                        }
+                        .font(.system(.headline, design: .rounded))
+                        .foregroundColor(Color(color))
+                    }
+                    .padding()
+                }
+            }
+            .navigationTitle("Reminder")
         }
     }
 }
