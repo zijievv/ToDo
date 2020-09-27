@@ -96,6 +96,7 @@ struct ContentView_Previews: PreviewProvider {
 }
 
 struct TaskCell: View {
+    @Environment(\.colorScheme) var colorScheme
     @ObservedObject var taskCellVM: TaskCellViewModel
     var onCommit: (Result<Task, InputError>) -> Void = { _ in }
 
@@ -111,7 +112,7 @@ struct TaskCell: View {
             ZStack {
                 Rectangle()
                     .foregroundColor(.gray)
-                    .opacity(0.2)
+                    .opacity(colorScheme == .dark ? 0.25 : 0.15)
                     .cornerRadius(10)
 
                 HStack {
