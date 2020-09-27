@@ -82,13 +82,12 @@
 			isa = PBXGroup;
 			children = (
 				786A6052251D98B200EB3608 /* AppDelegate.swift */,
+				7891A38F2520770E005A298E /* AppDelegate+Resolving.swift */,
 				786A6054251D98B200EB3608 /* SceneDelegate.swift */,
-				786A6056251D98B200EB3608 /* TaskListView.swift */,
+				7891A39325207B7A005A298E /* View */,
 				782755D1251DCCCB00F1C765 /* TaskListViewModel.swift */,
 				782755CE251DC5A700F1C765 /* Task.swift */,
 				782755D5251DE0D400F1C765 /* TaskRepository.swift */,
-				7805124725205F8000167C56 /* List+Separator.swift */,
-				7891A38F2520770E005A298E /* AppDelegate+Resolving.swift */,
 				786A6058251D98B200EB3608 /* Assets.xcassets */,
 				786A605D251D98B200EB3608 /* LaunchScreen.storyboard */,
 				786A6060251D98B200EB3608 /* Info.plist */,
@@ -103,6 +102,15 @@
 				786A605B251D98B200EB3608 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		7891A39325207B7A005A298E /* View */ = {
+			isa = PBXGroup;
+			children = (
+				786A6056251D98B200EB3608 /* TaskListView.swift */,
+				7805124725205F8000167C56 /* List+Separator.swift */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 		D86BE2418699D7C1EF70DBA9 /* Pods */ = {
