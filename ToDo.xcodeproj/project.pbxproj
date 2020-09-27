@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -18,6 +18,7 @@
 		786A6059251D98B200EB3608 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 786A6058251D98B200EB3608 /* Assets.xcassets */; };
 		786A605C251D98B200EB3608 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 786A605B251D98B200EB3608 /* Preview Assets.xcassets */; };
 		786A605F251D98B200EB3608 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 786A605D251D98B200EB3608 /* LaunchScreen.storyboard */; };
+		7891A3902520770E005A298E /* AppDelegate+Resolving.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7891A38F2520770E005A298E /* AppDelegate+Resolving.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -35,6 +36,7 @@
 		786A605B251D98B200EB3608 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		786A605E251D98B200EB3608 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		786A6060251D98B200EB3608 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		7891A38F2520770E005A298E /* AppDelegate+Resolving.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppDelegate+Resolving.swift"; sourceTree = "<group>"; };
 		90BFED61D819E107D07A32D0 /* Pods-ToDo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ToDo.debug.xcconfig"; path = "Target Support Files/Pods-ToDo/Pods-ToDo.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -82,10 +84,11 @@
 				786A6052251D98B200EB3608 /* AppDelegate.swift */,
 				786A6054251D98B200EB3608 /* SceneDelegate.swift */,
 				786A6056251D98B200EB3608 /* TaskListView.swift */,
-				7805124725205F8000167C56 /* List+Separator.swift */,
 				782755D1251DCCCB00F1C765 /* TaskListViewModel.swift */,
 				782755CE251DC5A700F1C765 /* Task.swift */,
 				782755D5251DE0D400F1C765 /* TaskRepository.swift */,
+				7805124725205F8000167C56 /* List+Separator.swift */,
+				7891A38F2520770E005A298E /* AppDelegate+Resolving.swift */,
 				786A6058251D98B200EB3608 /* Assets.xcassets */,
 				786A605D251D98B200EB3608 /* LaunchScreen.storyboard */,
 				786A6060251D98B200EB3608 /* Info.plist */,
@@ -108,7 +111,6 @@
 				90BFED61D819E107D07A32D0 /* Pods-ToDo.debug.xcconfig */,
 				560EA42CDB335E8AD015F399 /* Pods-ToDo.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -232,6 +234,7 @@
 				7805124825205F8000167C56 /* List+Separator.swift in Sources */,
 				782755D2251DCCCB00F1C765 /* TaskListViewModel.swift in Sources */,
 				786A6055251D98B200EB3608 /* SceneDelegate.swift in Sources */,
+				7891A3902520770E005A298E /* AppDelegate+Resolving.swift in Sources */,
 				786A6057251D98B200EB3608 /* TaskListView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
