@@ -140,6 +140,8 @@
 			dependencies = (
 			);
 			name = ToDo;
+			packageProductDependencies = (
+			);
 			productName = ToDo;
 			productReference = 786A604F251D98B200EB3608 /* ToDo.app */;
 			productType = "com.apple.product-type.application";
@@ -167,6 +169,8 @@
 				Base,
 			);
 			mainGroup = 786A6046251D98B100EB3608;
+			packageReferences = (
+			);
 			productRefGroup = 786A6050251D98B200EB3608 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
