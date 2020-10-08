@@ -9,23 +9,18 @@
 //
 
 import Combine
-import Resolver
+import Foundation
 import SwiftUI
 
 class TaskListViewModel: ObservableObject {
-    @Published var taskRepository: TaskRepository = Resolver.resolve()
     @Published var taskCellViewModels: [TaskCellViewModel] = []
 
     private var cancellables = Set<AnyCancellable>()
 
     init() {
-        taskRepository.$tasks.map { tasks in
-            tasks.map { task in
-                TaskCellViewModel(task: task)
-            }
+        self.taskCellViewModels = testTasksData.map {
+            TaskCellViewModel(task: $0)
         }
-        .assign(to: \.taskCellViewModels, on: self)
-        .store(in: &cancellables)
     }
 
     func addTask(_ task: Task) {
