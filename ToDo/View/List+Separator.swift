@@ -39,7 +39,7 @@ extension View {
     ///   - hideOnEmptyRows: If true hides divders on any empty rows ie rows shown in the footer
     /// - Returns: The List with the separator modified
     @available(iOS, obsoleted:14.0,
-               message:"hideOnEmptyRows is no longer needed because SwiftUI as of iOS14 always hides empty row separators in the footer")
+    message:"hideOnEmptyRows is no longer needed because SwiftUI as of iOS14 always hides empty row separators in the footer")
     public func listSeparatorStyle(
         _ style: ListSeparatorStyle,
         color: UIColor? = nil,
@@ -141,8 +141,8 @@ private struct ListSeparatorModifier: ViewModifier {
                 }
             }
         })
-            // Set frame to +1 of max divider height that way we dont also attempt to change this view
-            .frame(width: 1, height: ListConstants.maxDividerHeight + 1, alignment: .leading)
+        // Set frame to +1 of max divider height that way we dont also attempt to change this view
+        .frame(width: 1, height: ListConstants.maxDividerHeight + 1, alignment: .leading)
     }
 
     private func adjust(divider: UIView) {
@@ -216,7 +216,7 @@ class InjectView: UIView {
         self.dividerHandler.updateDividers()
 
         guard !didInjectDividerHandler, let parentVC = findViewController(),
-            let scrollView = findScrollView(in: parentVC.view) else { return }
+              let scrollView = findScrollView(in: parentVC.view) else { return }
 
         scrollView.addSubview(dividerHandler)
         scrollView.bringSubviewToFront(dividerHandler)

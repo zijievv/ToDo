@@ -88,10 +88,10 @@ struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
             TaskListView()
-//            TaskListView()
-//                .previewDevice("iPhone SE (1st generation)")
+            //            TaskListView()
+            //                .previewDevice("iPhone SE (1st generation)")
         }
-//        .environment(\.colorScheme, .dark)
+        //        .environment(\.colorScheme, .dark)
     }
 }
 
@@ -123,7 +123,7 @@ struct TaskCell: View {
                             onCommit(.failure(.empty))
                         }
                     })
-                        .id(taskCellVM.id)
+                    .id(taskCellVM.id)
 
                     if taskCellVM.task.important {
                         Image(systemName: "star.fill")
