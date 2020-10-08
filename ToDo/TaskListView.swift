@@ -93,23 +93,26 @@ struct TaskCell: View {
     var onCommit: (Result<Task, InputError>) -> Void = { _ in }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            HStack {
-                Image(systemName: taskCellVM.completionIcon.name)
-                    .font(.system(Font.TextStyle.title3))
-                    .foregroundColor(taskCellVM.completionIcon.color)
-                    .onTapGesture {
-                        taskCellVM.task.completed.toggle()
-                    }
+        HStack {
+            Image(systemName: taskCellVM.completionIcon.name)
+                .font(.system(Font.TextStyle.title3))
+                .foregroundColor(taskCellVM.completionIcon.color)
+                .onTapGesture {
+                    taskCellVM.task.completed.toggle()
+                }
 
-                TextField("New Reminder", text: $taskCellVM.task.title, onCommit: {
-                    if !taskCellVM.task.title.isEmpty {
-                        onCommit(.success(taskCellVM.task))
-                    } else {
-                        onCommit(.failure(.empty))
-                    }
-                })
-                    .id(taskCellVM.id)
+            TextField("New Reminder", text: $taskCellVM.task.title, onCommit: {
+                if !taskCellVM.task.title.isEmpty {
+                    onCommit(.success(taskCellVM.task))
+                } else {
+                    onCommit(.failure(.empty))
+                }
+            })
+                .id(taskCellVM.id)
+
+            if taskCellVM.task.important {
+                Image(systemName: "star.fill")
+                    .foregroundColor(.orange)
             }
         }
     }

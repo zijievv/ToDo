@@ -55,6 +55,6 @@ class TaskCellViewModel: ObservableObject, Identifiable {
     }
 
     static func newTask() -> TaskCellViewModel {
-        TaskCellViewModel(task: Task(title: "", completed: false, priority: .medium))
+        TaskCellViewModel(task: Task(title: "", important: false, completed: false))
     }
 }
