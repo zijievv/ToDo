@@ -35,12 +35,13 @@ class TaskListViewModel: ObservableObject {
 class TaskCellViewModel: ObservableObject, Identifiable {
     @Published var task: Task
     @Published var completionIcon: (name: String, color: Color) = ("", .clear)
-    var id: String = ""
+    var id: UUID
 
     private var cancellables = Set<AnyCancellable>()
 
     init(task: Task) {
         self.task = task
+        self.id = task.id
 
         $task.map {
             $0.completed ? ("largecircle.fill.circle", Color(UIColor.systemBlue)) :

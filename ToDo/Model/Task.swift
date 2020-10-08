@@ -10,7 +10,7 @@
 import Foundation
 
 struct Task: Identifiable {
-    var id: String = UUID().uuidString
+    var id: UUID = UUID()
     var title: String
     var important: Bool
     var completed: Bool
