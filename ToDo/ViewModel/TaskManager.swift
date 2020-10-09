@@ -32,7 +32,7 @@ class TaskManager {
 
 extension TaskManager: TaskManagerProtocol {
     func fetchTaskList(includingCompleted: Bool = false) -> [Task] {
-        includingCompleted ? tasks : tasks.filter { !$0.completed }
+        includingCompleted ? tasks : tasks.filter { !$0.isCompleted }
     }
 
     func add(task: Task) {
@@ -41,7 +41,7 @@ extension TaskManager: TaskManagerProtocol {
 
     func toggleCompleteStatus(of task: Task) {
         if let index = tasks.firstIndex(where: { $0.id == task.id }) {
-            tasks[index].completed.toggle()
+            tasks[index].isCompleted.toggle()
         }
     }
 
@@ -62,12 +62,12 @@ extension MockTaskManager: TaskManagerProtocol {
     func toggleCompleteStatus(of task: Task) {
 
         if let index = todos.firstIndex(where: { $0.id == task.id }) {
-            todos[index].important.toggle()
+            todos[index].isImportant.toggle()
         }
     }
 
     func fetchTaskList(includingCompleted: Bool = false) -> [Task] {
-        includingCompleted ? todos : todos.filter { !$0.completed }
+        includingCompleted ? todos : todos.filter { !$0.isCompleted }
     }
 
     func add(task: Task) {

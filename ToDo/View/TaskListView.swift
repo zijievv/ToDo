@@ -113,9 +113,9 @@ struct TaskCell: View {
 
     var body: some View {
         HStack {
-            Image(systemName: task.completed ? "largecircle.fill.circle" : "circle")
+            Image(systemName: task.isCompleted ? "largecircle.fill.circle" : "circle")
                 .font(.system(Font.TextStyle.title2))
-                .foregroundColor( task.completed ? .blue : .gray)
+                .foregroundColor( task.isCompleted ? .blue : .gray)
                 .onTapGesture {
                     // TODO: tap to toggle complete status
                 }
@@ -130,7 +130,7 @@ struct TaskCell: View {
                     Text(task.title)
                     Spacer()
 
-                    if task.important {
+                    if task.isImportant {
                         Image(systemName: "star.fill")
                             .foregroundColor(.orange)
                     }

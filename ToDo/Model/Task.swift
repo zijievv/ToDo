@@ -12,16 +12,16 @@ import Foundation
 struct Task: Identifiable {
     var id: UUID = UUID()
     var title: String
-    var important: Bool
-    var completed: Bool
+    var isImportant: Bool
+    var isCompleted: Bool
 }
 
 #if DEBUG
 let testTasksData: [Task] = [
-    Task(title: "Learn SwiftUI", important: true, completed: false),
-    Task(title: "Learn Combine", important: true, completed: false),
-    Task(title: "Watch WWDC", important: false, completed: true),
-    Task(title: "Use Firebase", important: false, completed: false),
-    Task(title: "Implement the Reminder list UI", important: true, completed: true),
+    Task(title: "Learn SwiftUI", isImportant: true, isCompleted: false),
+    Task(title: "Learn Combine", isImportant: true, isCompleted: false),
+    Task(title: "Watch WWDC", isImportant: false, isCompleted: true),
+    Task(title: "Use Firebase", isImportant: false, isCompleted: false),
+    Task(title: "Implement the Reminder list UI", isImportant: true, isCompleted: true),
 ]
 #endif
