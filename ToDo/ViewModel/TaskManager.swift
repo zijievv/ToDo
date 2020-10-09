@@ -12,7 +12,7 @@ import Foundation
 
 protocol TaskManagerProtocol {
     func fetchTaskList(includingCompleted: Bool) -> [Task]
-    func add(task: Task)
+    func addTask(withTitle title: String)
     func toggleCompleteStatus(of task: Task)
 }
 
@@ -35,7 +35,8 @@ extension TaskManager: TaskManagerProtocol {
         includingCompleted ? tasks : tasks.filter { !$0.isCompleted }
     }
 
-    func add(task: Task) {
+    func addTask(withTitle title: String) {
+        let task = Task(title: title, isImportant: false, isCompleted: false)
         tasks.insert(task, at: 0)
     }
 
@@ -57,7 +58,6 @@ class MockTaskManager {
 
 }
 
-// MARK: - DataManagerProtocol
 extension MockTaskManager: TaskManagerProtocol {
     func toggleCompleteStatus(of task: Task) {
 
@@ -70,7 +70,8 @@ extension MockTaskManager: TaskManagerProtocol {
         includingCompleted ? todos : todos.filter { !$0.isCompleted }
     }
 
-    func add(task: Task) {
+    func addTask(withTitle title: String) {
+        let task = Task(title: title, isImportant: false, isCompleted: false)
         todos.insert(task, at: 0)
     }
 }
