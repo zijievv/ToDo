@@ -23,9 +23,9 @@ final class TaskListViewModel: ObservableObject {
     @Published var tasks: [Task] = []
     @Published var showCompleted = false
 
-    var taskManager: TaskManagerProtocol
+    var taskManager: TasksManagerProtocol
 
-    init(taskManager: TaskManagerProtocol = TaskManager.shared) {
+    init(taskManager: TasksManagerProtocol = TasksManager.shared) {
         self.taskManager = taskManager
         fetchTasks()
     }

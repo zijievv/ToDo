@@ -16,9 +16,9 @@ protocol NewTaskViewModelProtocol {
 }
 
 final class NewTaskViewModel: ObservableObject {
-    var taskManager: TaskManagerProtocol
-    
-    init(taskManager: TaskManagerProtocol = TaskManager.shared) {
+    var taskManager: TasksManagerProtocol
+
+    init(taskManager: TasksManagerProtocol = TasksManager.shared) {
         self.taskManager = taskManager
     }
 }

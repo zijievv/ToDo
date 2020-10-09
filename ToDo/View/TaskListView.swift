@@ -51,7 +51,7 @@ struct TaskListView: View {
             VStack(alignment: .leading) {
                 List {
                     ForEach(taskListVM.tasks) { task in
-                        TaskCell(task: task)
+                        TaskCell(taskListViewModel: taskListVM, task: task)
                     }
                 }
                 .listStyle(InsetListStyle())
@@ -97,14 +97,15 @@ struct TaskListView: View {
 struct TaskListView_Previews: PreviewProvider {
     static var previews: some View {
         var view = TaskListView()
-        view.taskListVM = TaskListViewModel(taskManager: MockTaskManager())
+        view.taskListVM = TaskListViewModel(taskManager: TestTasksManager())
         return view
 //            .colorScheme(.dark)
     }
 }
 
 struct TaskCell: View {
-    @Environment(\.colorScheme) var colorScheme
+//    @Environment(\.colorScheme) var colorScheme
+    @ObservedObject var taskListViewModel: TaskListViewModel
     var task: Task
 
     var body: some View {
@@ -113,7 +114,7 @@ struct TaskCell: View {
                 .font(.system(Font.TextStyle.title2))
                 .foregroundColor( task.isCompleted ? .blue : .gray)
                 .onTapGesture {
-                    // TODO: tap to toggle complete status
+                    taskListViewModel.toggleCompleteStatus(of: task)
                 }
 
             ZStack {

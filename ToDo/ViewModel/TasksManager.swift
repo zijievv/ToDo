@@ -1,5 +1,5 @@
 //
-//  TaskManager.swift
+//  TasksManager.swift
 //  ToDo
 //
 //  Created by zijie vv on 25/09/2020.
@@ -10,27 +10,27 @@
 
 import Foundation
 
-protocol TaskManagerProtocol {
+protocol TasksManagerProtocol {
     func fetchTaskList(includingCompleted: Bool) -> [Task]
     func addTask(withTitle title: String)
     func toggleCompleteStatus(of task: Task)
 }
 
-extension TaskManagerProtocol {
+extension TasksManagerProtocol {
     func fetchTaskList(includingCompleted: Bool = false) -> [Task] {
         fetchTaskList(includingCompleted: includingCompleted)
     }
 }
 
-class TaskManager {
-    static let shared: TaskManagerProtocol = TaskManager()
+class TasksManager {
+    static let shared: TasksManagerProtocol = TasksManager()
 
     private var tasks = [Task]()
 
     private init() {}
 }
 
-extension TaskManager: TaskManagerProtocol {
+extension TasksManager: TasksManagerProtocol {
     func fetchTaskList(includingCompleted: Bool = false) -> [Task] {
         includingCompleted ? tasks : tasks.filter { !$0.isCompleted }
     }
@@ -49,7 +49,7 @@ extension TaskManager: TaskManagerProtocol {
 }
 
 #if DEBUG
-class MockTaskManager {
+class TestTasksManager {
     private var todos = [Task]()
 
     init() {
@@ -58,11 +58,10 @@ class MockTaskManager {
 
 }
 
-extension MockTaskManager: TaskManagerProtocol {
+extension TestTasksManager: TasksManagerProtocol {
     func toggleCompleteStatus(of task: Task) {
-
         if let index = todos.firstIndex(where: { $0.id == task.id }) {
-            todos[index].isImportant.toggle()
+            todos[index].isCompleted.toggle()
         }
     }
 
