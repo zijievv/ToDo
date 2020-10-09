@@ -13,39 +13,39 @@ import SwiftUI
 struct TaskListView: View {
     @ObservedObject var taskListVM: TaskListViewModel
     @State private var showAddNew: Bool = false
-    
+
     let color: UIColor = .systemBlue
-    
+
     init(taskListViewModel: TaskListViewModel = TaskListViewModel()) {
         self.taskListVM = taskListViewModel
-        
+
         let design = UIFontDescriptor.SystemDesign.rounded
-        
+
         let largeWeight = UIFontDescriptor.SymbolicTraits.traitBold
         let largeDescriptor = UIFontDescriptor
             .preferredFontDescriptor(withTextStyle: .largeTitle)
             .withDesign(design)!
             .withSymbolicTraits(largeWeight)!
         let largeFont = UIFont(descriptor: largeDescriptor, size: 34)
-        
+
         let inlineDescriptor = UIFontDescriptor
             .preferredFontDescriptor(withTextStyle: .headline)
             .withDesign(design)!
         let inlineFont = UIFont(descriptor: inlineDescriptor, size: 20)
-        
+
         // Use this if NavigationBarTitle is with Large Font
         UINavigationBar.appearance().largeTitleTextAttributes = [
             .foregroundColor: color,
             .font: largeFont,
         ]
-        
+
         // Use this if NavigationBarTitle is with displayMode = .inline
         UINavigationBar.appearance().titleTextAttributes = [
             .foregroundColor: color,
             .font: inlineFont,
         ]
     }
-    
+
     var body: some View {
         NavigationView {
             VStack(alignment: .leading) {
@@ -56,7 +56,7 @@ struct TaskListView: View {
                 }
                 .listStyle(InsetListStyle())
                 .listSeparatorStyle(.none)
-                
+
                 addNewButton
                     .padding()
             }
@@ -72,7 +72,7 @@ struct TaskListView: View {
             NewTaskView(showAddNew: $showAddNew, newTaskVM: NewTaskViewModel())
         }
     }
-    
+
     private var showOrHideCompleted: some View {
         Button(action: {
             taskListVM.showCompleted.toggle()
@@ -81,7 +81,7 @@ struct TaskListView: View {
             Text(taskListVM.showCompleted ? "Hide Completed" : "Show Completed")
         }
     }
-    
+
     private var addNewButton: some View {
         Button(action: { showAddNew = true }) {
             HStack {
@@ -99,13 +99,14 @@ struct TaskListView_Previews: PreviewProvider {
         var view = TaskListView()
         view.taskListVM = TaskListViewModel(taskManager: MockTaskManager())
         return view
+//            .colorScheme(.dark)
     }
 }
 
 struct TaskCell: View {
     @Environment(\.colorScheme) var colorScheme
     var task: Task
-    
+
     var body: some View {
         HStack {
             Image(systemName: task.isCompleted ? "largecircle.fill.circle" : "circle")
@@ -114,17 +115,17 @@ struct TaskCell: View {
                 .onTapGesture {
                     // TODO: tap to toggle complete status
                 }
-            
+
             ZStack {
                 Rectangle()
-                    .foregroundColor(.gray)
-                    .opacity(colorScheme == .dark ? 0.25 : 0.15)
-                    .cornerRadius(10)
-                
+                    .foregroundColor(Color(.systemGray6))
+                    .cornerRadius(8)
+
                 HStack {
                     Text(task.title)
+                        .font(.system(.body, design: .rounded))
                     Spacer()
-                    
+
                     if task.isImportant {
                         Image(systemName: "star.fill")
                             .foregroundColor(.orange)
