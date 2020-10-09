@@ -11,12 +11,14 @@
 import SwiftUI
 
 struct TaskListView: View {
-    @ObservedObject var taskListVM = TaskListViewModel()
+    @ObservedObject var taskListVM: TaskListViewModel
     @State var isAddingNewTask: Bool = false
 
     let color: UIColor = .systemBlue
 
-    init() {
+    init(taskListViewModel: TaskListViewModel = TaskListViewModel()) {
+        self.taskListVM = taskListViewModel
+
         let design = UIFontDescriptor.SystemDesign.rounded
 
         let largeWeight = UIFontDescriptor.SymbolicTraits.traitBold
@@ -48,65 +50,74 @@ struct TaskListView: View {
         NavigationView {
             VStack(alignment: .leading) {
                 List {
-                    ForEach(taskListVM.taskCellViewModels) { vmTaskCell in
-                        TaskCell(taskCellVM: vmTaskCell)
+                    ForEach(taskListVM.tasks) { task in
+                        TaskCell(task: task)
                     }
-                    .onDelete { indexSet in
-                        taskListVM.removeTask(atOffsets: indexSet)
-                    }
-
-                    if isAddingNewTask {
-                        TaskCell(taskCellVM: TaskCellViewModel.newTask()) { result in
-                            if case let .success(task) = result {
-                                taskListVM.addTask(task)
-                            }
-                            isAddingNewTask.toggle()
-                        }
-                    }
+//                    if isAddingNewTask {
+//                        TaskCell(taskCellVM: TaskCellViewModel.newTask()) { result in
+//                            if case let .success(task) = result {
+//                                taskListVM.addTask(task)
+//                            }
+//                            isAddingNewTask.toggle()
+//                        }
+//                    }
                 }
                 .listStyle(InsetListStyle())
                 .listSeparatorStyle(.none)
+                .onAppear {
+                    self.taskListVM.fetchTasks()
+                }
 
                 if !isAddingNewTask {
-                    Button(action: { isAddingNewTask.toggle() }) {
-                        HStack {
-                            Image(systemName: "plus.circle.fill")
-                            Text("New Reminder")
-                        }
-                        .font(.system(.headline, design: .rounded))
-                        .foregroundColor(Color(color))
-                    }
-                    .padding()
+                    addNewButton
+                        .padding()
                 }
             }
             .navigationTitle("Reminder")
+            .navigationBarItems(trailing: showOrHideCompleted)
+        }
+    }
+
+    var showOrHideCompleted: some View {
+        Button(action: {
+            taskListVM.showCompleted.toggle()
+            self.taskListVM.fetchTasks()
+        }) {
+            Text(taskListVM.showCompleted ? "Hide Completed" : "Show Completed")
+        }
+    }
+
+    var addNewButton: some View {
+        Button(action: { /* isAddingNewTask.toggle() */ }) {
+            HStack {
+                Image(systemName: "plus.circle.fill")
+                Text("New Reminder")
+            }
+            .font(.system(.headline, design: .rounded))
+            .foregroundColor(Color(color))
         }
     }
 }
 
-struct ContentView_Previews: PreviewProvider {
+struct TaskListView_Previews: PreviewProvider {
     static var previews: some View {
-        Group {
-            TaskListView()
-            //            TaskListView()
-            //                .previewDevice("iPhone SE (1st generation)")
-        }
-        //        .environment(\.colorScheme, .dark)
+        var view = TaskListView()
+        view.taskListVM = TaskListViewModel(taskManager: MockTaskManager())
+        return view
     }
 }
 
 struct TaskCell: View {
     @Environment(\.colorScheme) var colorScheme
-    @ObservedObject var taskCellVM: TaskCellViewModel
-    var onCommit: (Result<Task, InputError>) -> Void = { _ in }
+    var task: Task
 
     var body: some View {
         HStack {
-            Image(systemName: taskCellVM.completionIcon.name)
+            Image(systemName: task.completed ? "largecircle.fill.circle" : "circle")
                 .font(.system(Font.TextStyle.title2))
-                .foregroundColor(taskCellVM.completionIcon.color)
+                .foregroundColor( task.completed ? .blue : .gray)
                 .onTapGesture {
-                    taskCellVM.task.completed.toggle()
+                    // TODO: tap to toggle complete status
                 }
 
             ZStack {
@@ -116,16 +127,10 @@ struct TaskCell: View {
                     .cornerRadius(10)
 
                 HStack {
-                    TextField("New Reminder", text: $taskCellVM.task.title, onCommit: {
-                        if !taskCellVM.task.title.isEmpty {
-                            onCommit(.success(taskCellVM.task))
-                        } else {
-                            onCommit(.failure(.empty))
-                        }
-                    })
-                    .id(taskCellVM.id)
+                    Text(task.title)
+                    Spacer()
 
-                    if taskCellVM.task.important {
+                    if task.important {
                         Image(systemName: "star.fill")
                             .foregroundColor(.orange)
                     }
@@ -134,8 +139,4 @@ struct TaskCell: View {
             }
         }
     }
-}
-
-enum InputError: Error {
-    case empty
 }
