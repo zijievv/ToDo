@@ -12,50 +12,31 @@ import Combine
 import Foundation
 import SwiftUI
 
-class TaskListViewModel: ObservableObject {
-    @Published var taskCellViewModels: [TaskCellViewModel] = []
+protocol TaskListViewModelProtocol {
+    var tasks: [Task] { get }
+    var showCompleted: Bool { get set }
+    func fetchTasks()
+    func toggleCompleteStatus(of task: Task)
+}
 
-    private var cancellables = Set<AnyCancellable>()
+final class TaskListViewModel: ObservableObject {
+    @Published var tasks: [Task] = []
+    @Published var showCompleted = false
 
-    init() {
-        self.taskCellViewModels = testTasksData.map {
-            TaskCellViewModel(task: $0)
-        }
-    }
+    var taskManager: TaskManagerProtocol
 
-    func addTask(_ task: Task) {
-        taskCellViewModels.append(TaskCellViewModel(task: task))
-    }
-
-    func removeTask(atOffsets indexSet: IndexSet) {
-        taskCellViewModels.remove(atOffsets: indexSet)
+    init(taskManager: TaskManagerProtocol = TaskManager.shared) {
+        self.taskManager = taskManager
+        fetchTasks()
     }
 }
 
-class TaskCellViewModel: ObservableObject, Identifiable {
-    @Published var task: Task
-    @Published var completionIcon: (name: String, color: Color) = ("", .clear)
-    var id: UUID
-
-    private var cancellables = Set<AnyCancellable>()
-
-    init(task: Task) {
-        self.task = task
-        self.id = task.id
-
-        $task.map {
-            $0.completed ? ("largecircle.fill.circle", Color(UIColor.systemBlue)) :
-                ("circle", Color(UIColor.systemGray))
-        }
-        .assign(to: \.completionIcon, on: self)
-        .store(in: &cancellables)
-
-        $task.map { $0.id }
-            .assign(to: \.id, on: self)
-            .store(in: &cancellables)
+extension TaskListViewModel: TaskListViewModelProtocol {
+    func fetchTasks() {
+        tasks = taskManager.fetchTaskList(includingCompleted: showCompleted)
     }
 
-    static func newTask() -> TaskCellViewModel {
-        TaskCellViewModel(task: Task(title: "", important: false, completed: false))
+    func toggleCompleteStatus(of task: Task) {
+        taskManager.toggleCompleteStatus(of: task)
     }
 }

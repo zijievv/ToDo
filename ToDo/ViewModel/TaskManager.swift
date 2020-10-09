@@ -46,3 +46,32 @@ extension TaskManager: TaskManagerProtocol {
     }
 
 }
+
+#if DEBUG
+class MockTaskManager {
+    private var todos = [Task]()
+
+    init() {
+        todos = testTasksData
+    }
+
+}
+
+// MARK: - DataManagerProtocol
+extension MockTaskManager: TaskManagerProtocol {
+    func toggleCompleteStatus(of task: Task) {
+
+        if let index = todos.firstIndex(where: { $0.id == task.id }) {
+            todos[index].important.toggle()
+        }
+    }
+
+    func fetchTaskList(includingCompleted: Bool = false) -> [Task] {
+        includingCompleted ? todos : todos.filter { !$0.completed }
+    }
+
+    func add(task: Task) {
+        todos.insert(task, at: 0)
+    }
+}
+#endif
