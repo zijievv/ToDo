@@ -1,86 +1,84 @@
 //
-//  TaskListView.swift
+//  ContentView.swift
 //  ToDo
 //
-//  Created by zijie vv on 25/09/2020.
+//  Created by zijie vv on 11/10/2020.
 //  Copyright © 2020 zijie vv. All rights reserved.
 //
 //  ================================================================================================
 //
+  
 
 import SwiftUI
+import CoreData
 
-struct TaskListView: View {
+struct ContentView: View {
+    @Environment(\.managedObjectContext) private var viewContext
+
+    @FetchRequest(
+        sortDescriptors: [NSSortDescriptor(keyPath: \Item.timestamp, ascending: true)],
+        animation: .default)
+    private var items: FetchedResults<Item>
+
     var body: some View {
-        GeometryReader { geometry in
-            NavigationView {
-                VStack(alignment: .leading) {
-                    ScrollView {
-                        LazyVStack(alignment: .leading) {
-                            ForEach(0..<5) { _ in
-                                TaskCell()
-                            }
-                        }
-                    }
+        List {
+            ForEach(items) { item in
+                Text("Item at \(item.timestamp!, formatter: itemFormatter)")
+            }
+            .onDelete(perform: deleteItems)
+        }
+        .toolbar {
+            #if os(iOS)
+            EditButton()
+            #endif
 
-                    Button(action: {}) {
-                        HStack {
-                            Image(systemName: "plus.circle.fill")
-                            Text("New Reminder")
-                        }
-                        .font(.system(.headline, design: .rounded))
-                        .foregroundColor(.blue)
-                    }
-                }
-                .padding(.leading)
-                .toolbar {
-                    ToolbarItem(placement: .principal) {
-                        self.navigationTitle
-                            .padding()
-                            .frame(width: geometry.size.width)
-                    }
-                }
+            Button(action: addItem) {
+                Label("Add Item", systemImage: "plus")
             }
         }
     }
 
-    let navigationTitle: some View = {
-        HStack {
-            Text("Reminders")
-                .font(.system(.largeTitle, design: .rounded))
-                .fontWeight(.bold)
-                .foregroundColor(.blue)
-            Spacer()
+    private func addItem() {
+        withAnimation {
+            let newItem = Item(context: viewContext)
+            newItem.timestamp = Date()
+
+            do {
+                try viewContext.save()
+            } catch {
+                // Replace this implementation with code to handle the error appropriately.
+                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+                let nsError = error as NSError
+                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+            }
         }
-    }()
+    }
+
+    private func deleteItems(offsets: IndexSet) {
+        withAnimation {
+            offsets.map { items[$0] }.forEach(viewContext.delete)
+
+            do {
+                try viewContext.save()
+            } catch {
+                // Replace this implementation with code to handle the error appropriately.
+                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+                let nsError = error as NSError
+                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+            }
+        }
+    }
 }
+
+private let itemFormatter: DateFormatter = {
+    let formatter = DateFormatter()
+    formatter.dateStyle = .short
+    formatter.timeStyle = .medium
+    return formatter
+}()
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        TaskListView()
-    }
-}
-
-struct TaskCell: View {
-    var body: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            HStack {
-//                Image(systemName: "largecircle.fill.circle")
-                Image(systemName: "circle")
-                    .font(.system(Font.TextStyle.title3))
-                Text("Hello")
-                    .font(.system(.headline, design: .rounded))
-                    .fontWeight(.light)
-            }
-
-            HStack(alignment: .center) {
-                Image(systemName: "circle")
-                    .font(.system(Font.TextStyle.title3))
-                    .foregroundColor(.clear)
-                Rectangle()
-                    .foregroundColor(.gray)
-                    .frame(height: 1)
-            }
-        }
+        ContentView().environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
     }
 }
