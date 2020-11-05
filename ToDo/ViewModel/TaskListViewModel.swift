@@ -38,5 +38,6 @@ extension TaskListViewModel: TaskListViewModelProtocol {
 
     func toggleCompleteStatus(of task: Task) {
         taskManager.toggleCompleteStatus(of: task)
+        fetchTasks()
     }
 }

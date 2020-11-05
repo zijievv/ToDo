@@ -20,6 +20,7 @@
 		78640BB92532C44E00A0BF59 /* TaskListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78640BB22532C44E00A0BF59 /* TaskListViewModel.swift */; };
 		78640BBA2532C44E00A0BF59 /* NewTaskViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78640BB32532C44E00A0BF59 /* NewTaskViewModel.swift */; };
 		78640BBB2532C44E00A0BF59 /* TasksManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78640BB42532C44E00A0BF59 /* TasksManager.swift */; };
+		7867C86525541463000ACB06 /* TaskCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7867C86425541463000ACB06 /* TaskCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +39,7 @@
 		78640BB22532C44E00A0BF59 /* TaskListViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskListViewModel.swift; sourceTree = "<group>"; };
 		78640BB32532C44E00A0BF59 /* NewTaskViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewTaskViewModel.swift; sourceTree = "<group>"; };
 		78640BB42532C44E00A0BF59 /* TasksManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TasksManager.swift; sourceTree = "<group>"; };
+		7867C86425541463000ACB06 /* TaskCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,6 +98,7 @@
 			isa = PBXGroup;
 			children = (
 				78640BAC2532C44E00A0BF59 /* TaskListView.swift */,
+				7867C86425541463000ACB06 /* TaskCell.swift */,
 				78640BAD2532C44E00A0BF59 /* List+Separator.swift */,
 				78640BAE2532C44E00A0BF59 /* NewTaskView.swift */,
 			);
@@ -193,6 +196,7 @@
 				78640BB82532C44E00A0BF59 /* Task.swift in Sources */,
 				78640B962532C24300A0BF59 /* Persistence.swift in Sources */,
 				78640BB72532C44E00A0BF59 /* NewTaskView.swift in Sources */,
+				7867C86525541463000ACB06 /* TaskCell.swift in Sources */,
 				78640B8F2532C24300A0BF59 /* ContentView.swift in Sources */,
 				78640BB52532C44E00A0BF59 /* TaskListView.swift in Sources */,
 				78640BB92532C44E00A0BF59 /* TaskListViewModel.swift in Sources */,

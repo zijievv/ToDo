@@ -14,14 +14,14 @@ struct NewTaskView: View {
     @Binding var showAddNew: Bool
     @ObservedObject var newTaskVM: NewTaskViewModel
     @State private var title = ""
-    
+
     var body: some View {
         NavigationView {
             List {
                 Section {
                     TextField("New Reminder", text: $title)
                 }
-                
+
                 Section {
                     important
                 }
@@ -37,19 +37,19 @@ struct NewTaskView: View {
             .navigationBarItems(leading: cancelButton, trailing: doneButton)
         }
     }
-    
+
     private var important: some View {
         HStack {
             Image(systemName: "star.square.fill")
                 .foregroundColor(.orange)
-            
+
             Toggle(isOn: .constant(true), label: {
                 Text("Important")
             })
         }
         .font(.system(.title3, design: .rounded))
     }
-    
+
     private var cancelButton: some View {
         Button(action: {
             showAddNew.toggle()
@@ -57,7 +57,7 @@ struct NewTaskView: View {
             Text("Cancel")
         })
     }
-    
+
     private var doneButton: some View {
         Button(action: {
             newTaskVM.addNewTask(title: title)
@@ -65,7 +65,7 @@ struct NewTaskView: View {
         }, label: {
             Text("Done")
         })
-        .disabled(title.isEmpty)
+            .disabled(title.isEmpty)
     }
 }
 

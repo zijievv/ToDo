@@ -45,7 +45,6 @@ extension TasksManager: TasksManagerProtocol {
             tasks[index].isCompleted.toggle()
         }
     }
-
 }
 
 #if DEBUG
@@ -55,7 +54,6 @@ class TestTasksManager {
     init() {
         todos = testTasksData
     }
-
 }
 
 extension TestTasksManager: TasksManagerProtocol {

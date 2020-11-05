@@ -103,38 +103,3 @@ struct TaskListView_Previews: PreviewProvider {
 //            .colorScheme(.dark)
     }
 }
-
-struct TaskCell: View {
-//    @Environment(\.colorScheme) var colorScheme
-    @ObservedObject var taskListViewModel: TaskListViewModel
-    var task: Task
-
-    var body: some View {
-        HStack {
-            Image(systemName: task.isCompleted ? "largecircle.fill.circle" : "circle")
-                .font(.system(Font.TextStyle.title2))
-                .foregroundColor( task.isCompleted ? .blue : .gray)
-                .onTapGesture {
-                    taskListViewModel.toggleCompleteStatus(of: task)
-                }
-
-            ZStack {
-                Rectangle()
-                    .foregroundColor(Color(.systemGray6))
-                    .cornerRadius(8)
-
-                HStack {
-                    Text(task.title)
-                        .font(.system(.body, design: .rounded))
-                    Spacer()
-
-                    if task.isImportant {
-                        Image(systemName: "star.fill")
-                            .foregroundColor(.orange)
-                    }
-                }
-                .padding(10)
-            }
-        }
-    }
-}

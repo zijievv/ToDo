@@ -8,8 +8,8 @@
 //  ================================================================================================
 //
 
-import Foundation
 import Combine
+import Foundation
 
 protocol NewTaskViewModelProtocol {
     func addNewTask(title: String)
