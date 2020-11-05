@@ -79,6 +79,7 @@ struct TaskListView: View {
             self.taskListVM.fetchTasks()
         }) {
             Text(taskListVM.showCompleted ? "Hide Completed" : "Show Completed")
+                .font(.system(.headline, design: .rounded))
         }
     }
 
