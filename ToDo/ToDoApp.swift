@@ -16,9 +16,14 @@ struct ToDoApp: App {
 
     var body: some Scene {
         WindowGroup {
-            TaskListView()
-//            ContentView()
-//                .environment(\.managedObjectContext, persistenceController.container.viewContext)
+//            TaskListView()
+            NavigationView {
+                TaskListView()
+                    .environment(
+                        \.managedObjectContext,
+                        persistenceController.container.viewContext
+                    )
+            }
         }
     }
 }
