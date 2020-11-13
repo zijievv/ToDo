@@ -80,31 +80,19 @@ struct TaskListView: View {
             }
             .listStyle(InsetListStyle())
             .listSeparatorStyle(.none)
-            .navigationTitle("Reminder")
-            .navigationBarItems(
-                trailing: Button(action: { showCompleted.toggle() }) {
-                    Text(showCompleted ? "Hide Completed" : "Show Completed")
-                        .fontWeight(.semibold)
-                }
-            )
-            .sheet(isPresented: $showTaskDetail) {
-                TaskDetailView(showTaskDetail: $showTaskDetail)
-            }
 
             HStack {
-                Button(action: addItem) {
-//                    Label("New Reminder", systemImage: "plus.circle.fill")
-                    HStack {
-                        Image(systemName: "plus.circle.fill")
-                            .font(.title2)
-                        Text("New Reminder")
-                            .fontWeight(.semibold)
-                    }
-                }
-
+                newTaskButton
                 Spacer()
             }
             .padding()
+        }
+        .navigationTitle("Reminder")
+        .navigationBarItems(
+            trailing: showCompletedTasksButton
+        )
+        .sheet(isPresented: $showTaskDetail) {
+            TaskDetailView(showTaskDetail: $showTaskDetail)
         }
     }
 
@@ -123,6 +111,24 @@ struct TaskListView: View {
             } catch {
                 let nsError = error as NSError
                 fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+            }
+        }
+    }
+
+    private var showCompletedTasksButton: some View {
+        Button(action: { showCompleted.toggle() }) {
+            Text(showCompleted ? "Hide Completed" : "Show Completed")
+                .fontWeight(.semibold)
+        }
+    }
+
+    private var newTaskButton: some View {
+        Button(action: addItem) {
+            HStack {
+                Image(systemName: "plus.circle.fill")
+                    .font(.title2)
+                Text("New Reminder")
+                    .fontWeight(.semibold)
             }
         }
     }
