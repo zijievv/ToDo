@@ -1,5 +1,5 @@
 //
-//  TaskDetailView.swift
+//  AddNewTaskView.swift
 //  ToDo
 //
 //  Created by zijie vv on 12/11/2020.
@@ -11,10 +11,32 @@
 import CoreData
 import SwiftUI
 
-struct TaskDetailView: View {
+struct AddNewTaskView: View {
     @Environment(\.managedObjectContext) private var viewContext
-    @ObservedObject var taskVM: TaskViewModel = TaskViewModel()
-    @Binding var showTaskDetail: Bool
+
+    @Binding var addingNewTask: Bool
+
+    @State private var scheduledDate: Bool = false {
+        didSet {
+            if !scheduledDate {
+                scheduledTime = false
+            }
+        }
+    }
+
+    @State private var scheduledTime: Bool = false {
+        didSet {
+            if scheduledTime {
+                scheduledDate = true
+            }
+        }
+    }
+
+    @ObservedObject var taskVM = TaskViewModel()
+
+    init(isPresented condition: Binding<Bool>) {
+        self._addingNewTask = condition
+    }
 
     var body: some View {
         NavigationView {
@@ -44,8 +66,36 @@ struct TaskDetailView: View {
                         .foregroundColor(.black)
                 }
             }
-            .navigationBarItems(leading: cancelButton, trailing: doneButton)
+            .navigationBarItems(leading: cancel, trailing: done)
         }
+    }
+
+    private var done: some View {
+        Button(action: {
+            let newTask = Task(context: viewContext)
+
+            taskVM.assign(to: newTask)
+
+            do {
+                try viewContext.save()
+            } catch {
+                let nsError = error as NSError
+                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+            }
+
+            addingNewTask = false
+        }, label: {
+            Text("Done")
+        })
+            .disabled(taskVM.title.isEmpty)
+    }
+
+    private var cancel: some View {
+        Button(action: {
+            addingNewTask = false
+        }, label: {
+            Text("Cancel")
+        })
     }
 
     private func toggleRow(
@@ -75,14 +125,14 @@ struct TaskDetailView: View {
     private var scheduleDateToggle: some View {
         toggleRow(imageName: "calendar",
                   color: .red,
-                  isOn: $taskVM.isScheduledDate,
+                  isOn: $scheduledDate,
                   labelName: "Date")
     }
 
     private var scheduleTimeToggle: some View {
         toggleRow(imageName: "clock.fill",
                   color: .blue,
-                  isOn: $taskVM.isScheduledTime,
+                  isOn: $scheduledTime,
                   labelName: "Time")
     }
 
@@ -92,38 +142,11 @@ struct TaskDetailView: View {
                   isOn: $taskVM.isCompleted,
                   labelName: "Complete")
     }
-
-    private var cancelButton: some View {
-        Button(action: {
-            showTaskDetail.toggle()
-        }, label: {
-            Text("Cancel")
-        })
-    }
-
-    private var doneButton: some View {
-        Button(action: {
-            let item = Task(context: viewContext)
-
-            taskVM.assign(to: item)
-
-            do {
-                try viewContext.save()
-            } catch {
-                let nsError = error as NSError
-                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
-            }
-
-            showTaskDetail.toggle()
-        }, label: {
-            Text("Done")
-        })
-            .disabled(taskVM.title.isEmpty)
-    }
 }
 
-struct TaskInfoView_Previews: PreviewProvider {
+struct AddNewTaskView_Previews: PreviewProvider {
     static var previews: some View {
-        TaskDetailView(showTaskDetail: .constant(true))
+        AddNewTaskView(isPresented: .constant(true))
+//            .environment(\.colorScheme, .dark)
     }
 }

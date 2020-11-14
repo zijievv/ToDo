@@ -16,13 +16,10 @@ struct ToDoApp: App {
 
     var body: some Scene {
         WindowGroup {
-//            TaskListView()
             NavigationView {
                 TaskListView()
-                    .environment(
-                        \.managedObjectContext,
-                        persistenceController.container.viewContext
-                    )
+                    .environment(\.managedObjectContext,
+                                 persistenceController.container.viewContext)
             }
         }
     }

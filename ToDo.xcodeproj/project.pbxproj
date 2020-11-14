@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		78196733255D359100D112F1 /* TaskDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78196732255D359100D112F1 /* TaskDetailView.swift */; };
+		78196733255D359100D112F1 /* AddNewTaskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78196732255D359100D112F1 /* AddNewTaskView.swift */; };
 		78196739255D45D000D112F1 /* TaskViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78196738255D45D000D112F1 /* TaskViewModel.swift */; };
 		78640B8D2532C24300A0BF59 /* ToDoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78640B8C2532C24300A0BF59 /* ToDoApp.swift */; };
 		78640B8F2532C24300A0BF59 /* TaskListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78640B8E2532C24300A0BF59 /* TaskListView.swift */; };
@@ -19,7 +19,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		78196732255D359100D112F1 /* TaskDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskDetailView.swift; sourceTree = "<group>"; };
+		78196732255D359100D112F1 /* AddNewTaskView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewTaskView.swift; sourceTree = "<group>"; };
 		78196738255D45D000D112F1 /* TaskViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskViewModel.swift; sourceTree = "<group>"; };
 		78640B892532C24300A0BF59 /* ToDo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ToDo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		78640B8C2532C24300A0BF59 /* ToDoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoApp.swift; sourceTree = "<group>"; };
@@ -64,7 +64,7 @@
 			children = (
 				78640B8C2532C24300A0BF59 /* ToDoApp.swift */,
 				78640B8E2532C24300A0BF59 /* TaskListView.swift */,
-				78196732255D359100D112F1 /* TaskDetailView.swift */,
+				78196732255D359100D112F1 /* AddNewTaskView.swift */,
 				78196738255D45D000D112F1 /* TaskViewModel.swift */,
 				78640B952532C24300A0BF59 /* Persistence.swift */,
 				78640BAD2532C44E00A0BF59 /* List+Separator.swift */,
@@ -155,7 +155,7 @@
 			files = (
 				78196739255D45D000D112F1 /* TaskViewModel.swift in Sources */,
 				78640B962532C24300A0BF59 /* Persistence.swift in Sources */,
-				78196733255D359100D112F1 /* TaskDetailView.swift in Sources */,
+				78196733255D359100D112F1 /* AddNewTaskView.swift in Sources */,
 				78640B8F2532C24300A0BF59 /* TaskListView.swift in Sources */,
 				78640BB62532C44E00A0BF59 /* List+Separator.swift in Sources */,
 				78640B8D2532C24300A0BF59 /* ToDoApp.swift in Sources */,

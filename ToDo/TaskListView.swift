@@ -13,21 +13,25 @@ import SwiftUI
 
 struct TaskListView: View {
     @Environment(\.managedObjectContext) private var viewContext
-    @FetchRequest(
-        sortDescriptors: [
-            NSSortDescriptor(keyPath: \Task.isCompleted, ascending: true),
-            NSSortDescriptor(keyPath: \Task.scheduledDate, ascending: false),
-            NSSortDescriptor(keyPath: \Task.createdDate, ascending: true),
-        ],
-        animation: .default
-    )
+
+    private static var sortDescriptiors = [
+        NSSortDescriptor(keyPath: \Task.isCompleted, ascending: true),
+        NSSortDescriptor(keyPath: \Task.scheduledDate, ascending: false),
+        NSSortDescriptor(keyPath: \Task.createdDate, ascending: true),
+    ]
+
+    @FetchRequest(sortDescriptors: Self.sortDescriptiors, animation: .default)
     private var tasks: FetchedResults<Task>
 
-    @State var showTaskDetail: Bool = false
     @State private var showCompleted: Bool = false
+    @State private var addingNewTask: Bool = false
 
     var filteredTasks: [Task] {
-        return showCompleted ? tasks.map { $0 } : tasks.filter { !$0.isCompleted }
+        if showCompleted {
+            return tasks.map { $0 }
+        } else {
+            return tasks.filter { !$0.isCompleted }
+        }
     }
 
     var body: some View {
@@ -35,7 +39,7 @@ struct TaskListView: View {
             List {
                 ForEach(filteredTasks) { task in
                     HStack {
-                        Image(systemName: task.isCompleted ? "largecircle.fill.circle" : "circle")
+                        Image(systemName: task.isCompleted ? "checkmark.circle.fill" : "circle")
                             .font(.title2)
                             .foregroundColor(task.isCompleted ? .blue : .gray)
                             .onTapGesture(perform: {
@@ -82,23 +86,30 @@ struct TaskListView: View {
             .listSeparatorStyle(.none)
 
             HStack {
-                newTaskButton
+                addNewTask
                 Spacer()
             }
             .padding()
         }
         .navigationTitle("Reminder")
         .navigationBarItems(
-            trailing: showCompletedTasksButton
+            trailing: showCompletedTasks
         )
-        .sheet(isPresented: $showTaskDetail) {
-            TaskDetailView(showTaskDetail: $showTaskDetail)
+        .sheet(isPresented: $addingNewTask) {
+            AddNewTaskView(isPresented: $addingNewTask)
         }
     }
 
-    private func addItem() {
-        withAnimation {
-            showTaskDetail = true
+    private var addNewTask: some View {
+        Button(action: {
+            addingNewTask = true
+        }) {
+            HStack {
+                Image(systemName: "plus.circle.fill")
+                    .font(.title2)
+                Text("New Reminder")
+                    .fontWeight(.semibold)
+            }
         }
     }
 
@@ -115,21 +126,10 @@ struct TaskListView: View {
         }
     }
 
-    private var showCompletedTasksButton: some View {
+    private var showCompletedTasks: some View {
         Button(action: { showCompleted.toggle() }) {
             Text(showCompleted ? "Hide Completed" : "Show Completed")
                 .fontWeight(.semibold)
-        }
-    }
-
-    private var newTaskButton: some View {
-        Button(action: addItem) {
-            HStack {
-                Image(systemName: "plus.circle.fill")
-                    .font(.title2)
-                Text("New Reminder")
-                    .fontWeight(.semibold)
-            }
         }
     }
 

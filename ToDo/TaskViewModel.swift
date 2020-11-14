@@ -17,34 +17,24 @@ class TaskViewModel: ObservableObject {
     @Published var isCompleted: Bool
     @Published var isImportant: Bool
     @Published var createdDate: Date
-
-    @Published var isScheduledDate: Bool {
-        didSet {
-            if !isScheduledDate {
-                isScheduledTime = false
-            }
-        }
-    }
-
-    @Published var isScheduledTime: Bool {
-        didSet {
-            if isScheduledTime {
-                isScheduledDate = true
-            }
-        }
-    }
-
-    @Published var scheduledDate: Date
+    @Published var scheduledDate: Date?
 
     init() {
         self.id = UUID()
         self.title = ""
         self.isCompleted = false
         self.isImportant = false
-        self.isScheduledDate = false
-        self.isScheduledTime = false
         self.createdDate = Date()
-        self.scheduledDate = Date()
+        self.scheduledDate = nil
+    }
+
+    init(task: Task) {
+        self.id = task.id!
+        self.title = task.title!
+        self.isCompleted = task.isCompleted
+        self.isImportant = task.isImportant
+        self.createdDate = task.createdDate!
+        self.scheduledDate = task.scheduledDate
     }
 
     func assign(to item: Task) {
@@ -52,9 +42,9 @@ class TaskViewModel: ObservableObject {
         item.title = title
         item.isCompleted = isCompleted
         item.isImportant = isImportant
-        item.isScheduledDate = isScheduledDate
-        item.isScheduledTime = isScheduledTime
         item.createdDate = createdDate
         item.scheduledDate = scheduledDate
     }
 }
+
+extension TaskViewModel: Identifiable {}
