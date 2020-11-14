@@ -13,25 +13,9 @@ import SwiftUI
 
 struct AddNewTaskView: View {
     @Environment(\.managedObjectContext) private var viewContext
-
     @Binding var addingNewTask: Bool
-
-    @State private var scheduledDate: Bool = false {
-        didSet {
-            if !scheduledDate {
-                scheduledTime = false
-            }
-        }
-    }
-
-    @State private var scheduledTime: Bool = false {
-        didSet {
-            if scheduledTime {
-                scheduledDate = true
-            }
-        }
-    }
-
+    @State private var selectDate: Bool = false
+    @State private var date: Date = Date()
     @ObservedObject var taskVM = TaskViewModel()
 
     init(isPresented condition: Binding<Bool>) {
@@ -51,7 +35,10 @@ struct AddNewTaskView: View {
 
                 Section {
                     scheduleDateToggle
-                    scheduleTimeToggle
+
+                    if selectDate {
+                        DatePicker("Remind Date", selection: $date)
+                    }
                 }
 
                 Section {
@@ -74,6 +61,7 @@ struct AddNewTaskView: View {
         Button(action: {
             let newTask = Task(context: viewContext)
 
+            taskVM.scheduledDate = selectDate ? date : nil
             taskVM.assign(to: newTask)
 
             do {
@@ -125,20 +113,13 @@ struct AddNewTaskView: View {
     private var scheduleDateToggle: some View {
         toggleRow(imageName: "calendar",
                   color: .red,
-                  isOn: $scheduledDate,
+                  isOn: $selectDate.animation(.easeInOut),
                   labelName: "Date")
-    }
-
-    private var scheduleTimeToggle: some View {
-        toggleRow(imageName: "clock.fill",
-                  color: .blue,
-                  isOn: $scheduledTime,
-                  labelName: "Time")
     }
 
     private var completeToggle: some View {
         toggleRow(imageName: "checkmark.circle.fill",
-                  color: .green,
+                  color: .blue,
                   isOn: $taskVM.isCompleted,
                   labelName: "Complete")
     }

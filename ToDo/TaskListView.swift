@@ -57,15 +57,11 @@ struct TaskListView: View {
                                         .font(.system(.body, design: .rounded))
                                         .frame(width: 260, height: 20, alignment: .leading)
 
-                                    if task.isScheduledDate {
-                                        Text(
-                                            task.scheduledDate!,
-                                            formatter: task
-                                                .isScheduledTime ? timeFormatter : dateFormatter
-                                        )
-                                        .font(.caption)
-                                        .foregroundColor(Color(.systemGray))
-                                        .padding(.top, 3)
+                                    if let date = task.scheduledDate {
+                                        Text(date, formatter: dateFormatter)
+                                            .font(.caption)
+                                            .foregroundColor(Color(.systemGray))
+                                            .padding(.top, 3)
                                     }
                                 }
 
@@ -134,13 +130,6 @@ struct TaskListView: View {
     }
 
     private let dateFormatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .short
-        formatter.timeStyle = .none
-        return formatter
-    }()
-
-    private let timeFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateStyle = .short
         formatter.timeStyle = .short
