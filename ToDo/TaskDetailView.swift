@@ -1,8 +1,8 @@
 //
-//  AddNewTaskView.swift
+//  TaskDetailView.swift
 //  ToDo
 //
-//  Created by zijie vv on 12/11/2020.
+//  Created by zijie vv on 15/11/2020.
 //  Copyright © 2020 zijie vv. All rights reserved.
 //
 //  ================================================================================================
@@ -11,15 +11,40 @@
 import CoreData
 import SwiftUI
 
-struct AddNewTaskView: View {
+struct TaskDetailView: View {
     @Environment(\.managedObjectContext) private var viewContext
-    @Binding var addingNewTask: Bool
-    @State private var selectDate: Bool = false
-    @State private var date: Date = Date()
-    @ObservedObject var taskVM = TaskViewModel()
+    @Binding private var isPresented: Bool
 
-    init(isPresented condition: Binding<Bool>) {
-        self._addingNewTask = condition
+    @State private var selectDate: Bool
+    @State private var date: Date
+
+    @ObservedObject private var taskVM: TaskViewModel
+    @ObservedObject private var originalTaskVM: TaskViewModel
+
+    private let isAddingNewTask: Bool
+
+    init(isPresented: Binding<Bool>, editedTaskVM: TaskViewModel? = nil) {
+        self._isPresented = isPresented
+
+        if let editedTaskVM = editedTaskVM {
+            self.isAddingNewTask = false
+            self.taskVM = editedTaskVM.copy
+            self.originalTaskVM = editedTaskVM.copy
+
+            if let date = editedTaskVM.scheduledDate {
+                self._selectDate = State(initialValue: true)
+                self._date = State(initialValue: date)
+            } else {
+                self._selectDate = State(initialValue: false)
+                self._date = State(initialValue: Date())
+            }
+        } else {
+            self.isAddingNewTask = true
+            self.taskVM = TaskViewModel()
+            self.originalTaskVM = TaskViewModel()
+            self._selectDate = State(initialValue: false)
+            self._date = State(initialValue: Date())
+        }
     }
 
     var body: some View {
@@ -60,18 +85,10 @@ struct AddNewTaskView: View {
     private var done: some View {
         Button(action: {
             let newTask = Task(context: viewContext)
-
             taskVM.scheduledDate = selectDate ? date : nil
             taskVM.assign(to: newTask)
-
-            do {
-                try viewContext.save()
-            } catch {
-                let nsError = error as NSError
-                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
-            }
-
-            addingNewTask = false
+            saveData()
+            isPresented = false
         }, label: {
             Text("Done")
         })
@@ -80,10 +97,25 @@ struct AddNewTaskView: View {
 
     private var cancel: some View {
         Button(action: {
-            addingNewTask = false
+            if !isAddingNewTask {
+                let uneditedTask = Task(context: viewContext)
+                originalTaskVM.assign(to: uneditedTask)
+                saveData()
+            }
+
+            isPresented = false
         }, label: {
             Text("Cancel")
         })
+    }
+
+    private func saveData() {
+        do {
+            try viewContext.save()
+        } catch {
+            let nsError = error as NSError
+            fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+        }
     }
 
     private func toggleRow(
@@ -125,9 +157,11 @@ struct AddNewTaskView: View {
     }
 }
 
-struct AddNewTaskView_Previews: PreviewProvider {
+struct TaskDetailView_Preview: PreviewProvider {
     static var previews: some View {
-        AddNewTaskView(isPresented: .constant(true))
+        TaskDetailView(isPresented: .constant(true))
+            .environment(\.managedObjectContext,
+                         PersistenceController.preview.container.viewContext)
 //            .environment(\.colorScheme, .dark)
     }
 }

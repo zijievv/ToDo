@@ -28,7 +28,7 @@ struct TaskListView: View {
     @State private var editingTask: Bool = false
     @ObservedObject private var editedTaskVM: TaskViewModel = TaskViewModel()
 
-    var filteredTasks: [Task] {
+    private var filteredTasks: [Task] {
         if showCompleted {
             return tasks.map { $0 }
         } else {
@@ -82,10 +82,7 @@ struct TaskListView: View {
                             editingTask = true
                         }
                         .sheet(isPresented: $editingTask) {
-                            return EditTaskView(
-                                editedTaskVM: editedTaskVM,
-                                isPresented: $editingTask
-                            )
+                            TaskDetailView(isPresented: $editingTask, editedTaskVM: editedTaskVM)
                         }
                     }
                 }
@@ -105,7 +102,7 @@ struct TaskListView: View {
             trailing: showCompletedTasks
         )
         .sheet(isPresented: $addingNewTask) {
-            AddNewTaskView(isPresented: $addingNewTask)
+            TaskDetailView(isPresented: $addingNewTask)
         }
     }
 

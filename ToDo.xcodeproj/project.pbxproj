@@ -7,9 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		78196733255D359100D112F1 /* AddNewTaskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78196732255D359100D112F1 /* AddNewTaskView.swift */; };
 		78196739255D45D000D112F1 /* TaskViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78196738255D45D000D112F1 /* TaskViewModel.swift */; };
-		785EF5EE2560389C00E5BA90 /* EditTaskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 785EF5ED2560389C00E5BA90 /* EditTaskView.swift */; };
+		785EF5EE2560389C00E5BA90 /* TaskDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 785EF5ED2560389C00E5BA90 /* TaskDetailView.swift */; };
 		78640B8D2532C24300A0BF59 /* ToDoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78640B8C2532C24300A0BF59 /* ToDoApp.swift */; };
 		78640B8F2532C24300A0BF59 /* TaskListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78640B8E2532C24300A0BF59 /* TaskListView.swift */; };
 		78640B912532C24300A0BF59 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 78640B902532C24300A0BF59 /* Assets.xcassets */; };
@@ -17,12 +16,12 @@
 		78640B962532C24300A0BF59 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78640B952532C24300A0BF59 /* Persistence.swift */; };
 		78640B992532C24300A0BF59 /* ToDo.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 78640B972532C24300A0BF59 /* ToDo.xcdatamodeld */; };
 		78640BB62532C44E00A0BF59 /* List+Separator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78640BAD2532C44E00A0BF59 /* List+Separator.swift */; };
+		78B1747525614A0D000027ED /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78B1747425614A0D000027ED /* MainView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		78196732255D359100D112F1 /* AddNewTaskView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewTaskView.swift; sourceTree = "<group>"; };
 		78196738255D45D000D112F1 /* TaskViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskViewModel.swift; sourceTree = "<group>"; };
-		785EF5ED2560389C00E5BA90 /* EditTaskView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTaskView.swift; sourceTree = "<group>"; };
+		785EF5ED2560389C00E5BA90 /* TaskDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskDetailView.swift; sourceTree = "<group>"; };
 		78640B892532C24300A0BF59 /* ToDo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ToDo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		78640B8C2532C24300A0BF59 /* ToDoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoApp.swift; sourceTree = "<group>"; };
 		78640B8E2532C24300A0BF59 /* TaskListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListView.swift; sourceTree = "<group>"; };
@@ -32,6 +31,7 @@
 		78640B982532C24300A0BF59 /* ToDo.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ToDo.xcdatamodel; sourceTree = "<group>"; };
 		78640B9A2532C24300A0BF59 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		78640BAD2532C44E00A0BF59 /* List+Separator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "List+Separator.swift"; sourceTree = "<group>"; };
+		78B1747425614A0D000027ED /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -65,9 +65,9 @@
 			isa = PBXGroup;
 			children = (
 				78640B8C2532C24300A0BF59 /* ToDoApp.swift */,
+				78B1747425614A0D000027ED /* MainView.swift */,
 				78640B8E2532C24300A0BF59 /* TaskListView.swift */,
-				78196732255D359100D112F1 /* AddNewTaskView.swift */,
-				785EF5ED2560389C00E5BA90 /* EditTaskView.swift */,
+				785EF5ED2560389C00E5BA90 /* TaskDetailView.swift */,
 				78196738255D45D000D112F1 /* TaskViewModel.swift */,
 				78640B952532C24300A0BF59 /* Persistence.swift */,
 				78640BAD2532C44E00A0BF59 /* List+Separator.swift */,
@@ -157,9 +157,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				78196739255D45D000D112F1 /* TaskViewModel.swift in Sources */,
-				785EF5EE2560389C00E5BA90 /* EditTaskView.swift in Sources */,
+				78B1747525614A0D000027ED /* MainView.swift in Sources */,
+				785EF5EE2560389C00E5BA90 /* TaskDetailView.swift in Sources */,
 				78640B962532C24300A0BF59 /* Persistence.swift in Sources */,
-				78196733255D359100D112F1 /* AddNewTaskView.swift in Sources */,
 				78640B8F2532C24300A0BF59 /* TaskListView.swift in Sources */,
 				78640BB62532C44E00A0BF59 /* List+Separator.swift in Sources */,
 				78640B8D2532C24300A0BF59 /* ToDoApp.swift in Sources */,

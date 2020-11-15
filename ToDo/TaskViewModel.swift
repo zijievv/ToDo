@@ -37,6 +37,22 @@ class TaskViewModel: ObservableObject {
         self.scheduledDate = task.scheduledDate
     }
 
+    init(
+        id: UUID,
+        title: String,
+        isCompleted: Bool,
+        isImportant: Bool,
+        createdDate: Date,
+        scheduledDate: Date?
+    ) {
+        self.id = id
+        self.title = title
+        self.isCompleted = isCompleted
+        self.isImportant = isImportant
+        self.createdDate = createdDate
+        self.scheduledDate = scheduledDate
+    }
+
     func assign(to item: Task) {
         item.id = id
         item.title = title
@@ -53,6 +69,17 @@ class TaskViewModel: ObservableObject {
         self.isImportant = task.isImportant
         self.createdDate = task.createdDate!
         self.scheduledDate = task.scheduledDate
+    }
+
+    var copy: TaskViewModel {
+        TaskViewModel(
+            id: id,
+            title: title,
+            isCompleted: isCompleted,
+            isImportant: isImportant,
+            createdDate: createdDate,
+            scheduledDate: scheduledDate
+        )
     }
 }
 
