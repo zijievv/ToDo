@@ -45,6 +45,15 @@ class TaskViewModel: ObservableObject {
         item.createdDate = createdDate
         item.scheduledDate = scheduledDate
     }
+
+    func get(task: Task) {
+        self.id = task.id!
+        self.title = task.title!
+        self.isCompleted = task.isCompleted
+        self.isImportant = task.isImportant
+        self.createdDate = task.createdDate!
+        self.scheduledDate = task.scheduledDate
+    }
 }
 
 extension TaskViewModel: Identifiable {}

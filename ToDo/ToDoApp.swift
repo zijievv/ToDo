@@ -18,6 +18,7 @@ struct ToDoApp: App {
         WindowGroup {
             NavigationView {
                 TaskListView()
+//                EditTaskView()
                     .environment(\.managedObjectContext,
                                  persistenceController.container.viewContext)
             }

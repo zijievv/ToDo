@@ -25,6 +25,8 @@ struct TaskListView: View {
 
     @State private var showCompleted: Bool = false
     @State private var addingNewTask: Bool = false
+    @State private var editingTask: Bool = false
+    @ObservedObject private var editedTaskVM: TaskViewModel = TaskViewModel()
 
     var filteredTasks: [Task] {
         if showCompleted {
@@ -74,9 +76,20 @@ struct TaskListView: View {
                             }
                             .padding(10)
                         }
+                        .onTapGesture {
+                            editedTaskVM.get(task: task)
+                            viewContext.delete(task)
+                            editingTask = true
+                        }
+                        .sheet(isPresented: $editingTask) {
+                            return EditTaskView(
+                                editedTaskVM: editedTaskVM,
+                                isPresented: $editingTask
+                            )
+                        }
                     }
                 }
-                .onDelete(perform: deleteItems)
+                .onDelete(perform: withAnimation { deleteItems })
             }
             .listStyle(InsetListStyle())
             .listSeparatorStyle(.none)
@@ -110,15 +123,13 @@ struct TaskListView: View {
     }
 
     private func deleteItems(offsets: IndexSet) {
-        withAnimation {
-            offsets.map { tasks[$0] }.forEach(viewContext.delete)
+        offsets.map { tasks[$0] }.forEach(viewContext.delete)
 
-            do {
-                try viewContext.save()
-            } catch {
-                let nsError = error as NSError
-                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
-            }
+        do {
+            try viewContext.save()
+        } catch {
+            let nsError = error as NSError
+            fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
         }
     }
 
@@ -144,6 +155,6 @@ struct TaskListView_Previews: PreviewProvider {
                 .environment(\.managedObjectContext,
                              PersistenceController.preview.container.viewContext)
         }
-//        .environment(\.colorScheme, .dark)
+        //        .environment(\.colorScheme, .dark)
     }
 }
