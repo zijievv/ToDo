@@ -94,13 +94,11 @@ struct TaskListView: View {
             HStack {
                 addNewTask
                 Spacer()
+                showCompletedTasks
             }
             .padding()
         }
         .navigationTitle("Reminder")
-        .navigationBarItems(
-            trailing: showCompletedTasks
-        )
         .sheet(isPresented: $addingNewTask) {
             TaskDetailView(isPresented: $addingNewTask)
         }
@@ -112,10 +110,9 @@ struct TaskListView: View {
         }) {
             HStack {
                 Image(systemName: "plus.circle.fill")
-                    .font(.title2)
                 Text("New Reminder")
-                    .fontWeight(.semibold)
             }
+            .font(.system(.headline, design: .rounded))
         }
     }
 
@@ -133,7 +130,7 @@ struct TaskListView: View {
     private var showCompletedTasks: some View {
         Button(action: { showCompleted.toggle() }) {
             Text(showCompleted ? "Hide Completed" : "Show Completed")
-                .fontWeight(.semibold)
+                .font(.system(.headline, design: .rounded))
         }
     }
 
