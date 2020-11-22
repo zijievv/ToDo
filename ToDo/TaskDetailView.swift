@@ -13,39 +13,9 @@ import SwiftUI
 
 struct TaskDetailView: View {
     @Environment(\.managedObjectContext) private var viewContext
-    @Binding private var isPresented: Bool
-
-    @State private var selectDate: Bool
-    @State private var date: Date
-
-    @ObservedObject private var taskVM: TaskViewModel
-    @ObservedObject private var originalTaskVM: TaskViewModel
-
-    private let isAddingNewTask: Bool
-
-    init(isPresented: Binding<Bool>, editedTaskVM: TaskViewModel? = nil) {
-        self._isPresented = isPresented
-
-        if let editedTaskVM = editedTaskVM {
-            self.isAddingNewTask = false
-            self.taskVM = editedTaskVM.copy
-            self.originalTaskVM = editedTaskVM.copy
-
-            if let date = editedTaskVM.scheduledDate {
-                self._selectDate = State(initialValue: true)
-                self._date = State(initialValue: date)
-            } else {
-                self._selectDate = State(initialValue: false)
-                self._date = State(initialValue: Date())
-            }
-        } else {
-            self.isAddingNewTask = true
-            self.taskVM = TaskViewModel()
-            self.originalTaskVM = TaskViewModel()
-            self._selectDate = State(initialValue: false)
-            self._date = State(initialValue: Date())
-        }
-    }
+    @Environment(\.presentationMode) private var presentationMode
+    @ObservedObject var taskVM: TaskViewModel
+    @State private var scheduledDate = Date()
 
     var body: some View {
         NavigationView {
@@ -61,8 +31,8 @@ struct TaskDetailView: View {
                 Section {
                     scheduleDateToggle
 
-                    if selectDate {
-                        DatePicker("Remind Date", selection: $date)
+                    if taskVM.isScheduled {
+                        DatePicker("Remind Date", selection: $scheduledDate)
                     }
                 }
 
@@ -75,7 +45,6 @@ struct TaskDetailView: View {
                 ToolbarItem(placement: .principal) {
                     Text("Detail")
                         .font(.system(.title3, design: .rounded))
-                        .foregroundColor(.black)
                 }
             }
             .navigationBarItems(leading: cancel, trailing: done)
@@ -84,29 +53,21 @@ struct TaskDetailView: View {
 
     private var done: some View {
         Button(action: {
-            let newTask = Task(context: viewContext)
-            taskVM.scheduledDate = selectDate ? date : nil
-            taskVM.assign(to: newTask)
-            saveData()
-            isPresented = false
-        }, label: {
+            if taskVM.isScheduled { taskVM.scheduledDate = scheduledDate }
+            taskVM.writeData(to: viewContext)
+            presentationMode.wrappedValue.dismiss()
+        }) {
             Text("Done")
-        })
-            .disabled(taskVM.title.isEmpty)
+        }
+        .disabled(taskVM.title.isEmpty)
     }
 
     private var cancel: some View {
         Button(action: {
-            if !isAddingNewTask {
-                let uneditedTask = Task(context: viewContext)
-                originalTaskVM.assign(to: uneditedTask)
-                saveData()
-            }
-
-            isPresented = false
-        }, label: {
+            presentationMode.wrappedValue.dismiss()
+        }) {
             Text("Cancel")
-        })
+        }
     }
 
     private func saveData() {
@@ -145,7 +106,7 @@ struct TaskDetailView: View {
     private var scheduleDateToggle: some View {
         toggleRow(imageName: "calendar",
                   color: .red,
-                  isOn: $selectDate.animation(.easeInOut),
+                  isOn: $taskVM.isScheduled,
                   labelName: "Date")
     }
 
@@ -159,7 +120,7 @@ struct TaskDetailView: View {
 
 struct TaskDetailView_Preview: PreviewProvider {
     static var previews: some View {
-        TaskDetailView(isPresented: .constant(true))
+        TaskDetailView(taskVM: TaskViewModel())
             .environment(\.managedObjectContext,
                          PersistenceController.preview.container.viewContext)
 //            .environment(\.colorScheme, .dark)

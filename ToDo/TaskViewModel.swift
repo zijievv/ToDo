@@ -1,5 +1,5 @@
 //
-//  TaskViewModel.swift
+//  TaskVM.swift
 //  ToDo
 //
 //  Created by zijie vv on 12/11/2020.
@@ -12,75 +12,67 @@ import CoreData
 import SwiftUI
 
 class TaskViewModel: ObservableObject {
-    @Published var id: UUID
-    @Published var title: String
-    @Published var isCompleted: Bool
-    @Published var isImportant: Bool
-    @Published var createdDate: Date
-    @Published var scheduledDate: Date?
+    @Published var id = UUID()
+    @Published var title: String = ""
+    @Published var isCompleted = false
+    @Published var isImportant = false
+    @Published var createdDate = Date()
 
-    init() {
-        self.id = UUID()
-        self.title = ""
-        self.isCompleted = false
-        self.isImportant = false
-        self.createdDate = Date()
-        self.scheduledDate = nil
+    @Published var scheduledDate: Date? = nil
+    @Published var isScheduled = false
+
+    @Published var updatedTask: Task!
+
+    func writeData(to context: NSManagedObjectContext) {
+        // Update Task
+        if updatedTask != nil {
+            updatedTask.id = id
+            updatedTask.title = title
+            updatedTask.isCompleted = isCompleted
+            updatedTask.isImportant = isImportant
+            updatedTask.createdDate = createdDate
+            updatedTask.scheduledDate = scheduledDate
+
+            try! context.save()
+            return
+        }
+
+        // Add New Task
+        let newTask = Task(context: context)
+        newTask.id = id
+        newTask.title = title
+        newTask.isCompleted = isCompleted
+        newTask.isImportant = isImportant
+        newTask.createdDate = Date()
+        newTask.scheduledDate = scheduledDate
+
+        do {
+            try context.save()
+        } catch {
+            let nsError = error as NSError
+            fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+        }
     }
 
-    init(task: Task) {
-        self.id = task.id!
-        self.title = task.title!
-        self.isCompleted = task.isCompleted
-        self.isImportant = task.isImportant
-        self.createdDate = task.createdDate!
-        self.scheduledDate = task.scheduledDate
+    func edit(task: Task) {
+        updatedTask = task
+
+        id = task.id!
+        title = task.title!
+        isCompleted = task.isCompleted
+        isImportant = task.isImportant
+        createdDate = task.createdDate!
+        scheduledDate = task.scheduledDate
     }
 
-    init(
-        id: UUID,
-        title: String,
-        isCompleted: Bool,
-        isImportant: Bool,
-        createdDate: Date,
-        scheduledDate: Date?
-    ) {
-        self.id = id
-        self.title = title
-        self.isCompleted = isCompleted
-        self.isImportant = isImportant
-        self.createdDate = createdDate
-        self.scheduledDate = scheduledDate
-    }
-
-    func assign(to item: Task) {
-        item.id = id
-        item.title = title
-        item.isCompleted = isCompleted
-        item.isImportant = isImportant
-        item.createdDate = createdDate
-        item.scheduledDate = scheduledDate
-    }
-
-    func get(task: Task) {
-        self.id = task.id!
-        self.title = task.title!
-        self.isCompleted = task.isCompleted
-        self.isImportant = task.isImportant
-        self.createdDate = task.createdDate!
-        self.scheduledDate = task.scheduledDate
-    }
-
-    var copy: TaskViewModel {
-        TaskViewModel(
-            id: id,
-            title: title,
-            isCompleted: isCompleted,
-            isImportant: isImportant,
-            createdDate: createdDate,
-            scheduledDate: scheduledDate
-        )
+    func resetAllAttributes() {
+        updatedTask = nil
+        id = UUID()
+        title = ""
+        isCompleted = false
+        isImportant = false
+        createdDate = Date()
+        scheduledDate = nil
+        isScheduled = false
     }
 }
-
-extension TaskViewModel: Identifiable {}

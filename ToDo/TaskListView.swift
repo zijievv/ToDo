@@ -20,20 +20,16 @@ struct TaskListView: View {
         NSSortDescriptor(keyPath: \Task.createdDate, ascending: true),
     ]
 
-    @FetchRequest(sortDescriptors: Self.sortDescriptiors, animation: .default)
+    @FetchRequest(sortDescriptors: Self.sortDescriptiors, animation: .easeInOut)
     private var tasks: FetchedResults<Task>
 
+    @ObservedObject var taskVM = TaskViewModel()
+
     @State private var showCompleted: Bool = false
-    @State private var addingNewTask: Bool = false
-    @State private var editingTask: Bool = false
-    @ObservedObject private var editedTaskVM: TaskViewModel = TaskViewModel()
+    @State private var showTaskDetailView: Bool = false
 
     private var filteredTasks: [Task] {
-        if showCompleted {
-            return tasks.map { $0 }
-        } else {
-            return tasks.filter { !$0.isCompleted }
-        }
+        showCompleted ? tasks.map { $0 } : tasks.filter { !$0.isCompleted }
     }
 
     var body: some View {
@@ -44,9 +40,7 @@ struct TaskListView: View {
                         Image(systemName: task.isCompleted ? "checkmark.circle.fill" : "circle")
                             .font(.title2)
                             .foregroundColor(task.isCompleted ? .blue : .gray)
-                            .onTapGesture(perform: {
-                                task.isCompleted.toggle()
-                            })
+                            .onTapGesture { toggleAndSaveCompletion(of: task) }
 
                         ZStack {
                             Rectangle()
@@ -77,12 +71,9 @@ struct TaskListView: View {
                             .padding(10)
                         }
                         .onTapGesture {
-                            editedTaskVM.get(task: task)
-                            viewContext.delete(task)
-                            editingTask = true
-                        }
-                        .sheet(isPresented: $editingTask) {
-                            TaskDetailView(isPresented: $editingTask, editedTaskVM: editedTaskVM)
+                            taskVM.resetAllAttributes()
+                            taskVM.edit(task: task)
+                            showTaskDetailView = true
                         }
                     }
                 }
@@ -99,14 +90,15 @@ struct TaskListView: View {
             .padding()
         }
         .navigationTitle("Reminder")
-        .sheet(isPresented: $addingNewTask) {
-            TaskDetailView(isPresented: $addingNewTask)
+        .sheet(isPresented: $showTaskDetailView) {
+            TaskDetailView(taskVM: taskVM)
         }
     }
 
     private var addNewTask: some View {
         Button(action: {
-            addingNewTask = true
+            taskVM.resetAllAttributes()
+            showTaskDetailView = true
         }) {
             HStack {
                 Image(systemName: "plus.circle.fill")
@@ -128,10 +120,17 @@ struct TaskListView: View {
     }
 
     private var showCompletedTasks: some View {
-        Button(action: { showCompleted.toggle() }) {
+        Button(action: {
+            showCompleted.toggle()
+        }) {
             Text(showCompleted ? "Hide Completed" : "Show Completed")
                 .font(.system(.headline, design: .rounded))
         }
+    }
+
+    private func toggleAndSaveCompletion(of task: Task) {
+        task.isCompleted.toggle()
+        try! viewContext.save()
     }
 
     private let dateFormatter: DateFormatter = {
@@ -144,11 +143,11 @@ struct TaskListView: View {
 
 struct TaskListView_Previews: PreviewProvider {
     static var previews: some View {
-        NavigationView {
-            TaskListView()
-                .environment(\.managedObjectContext,
-                             PersistenceController.preview.container.viewContext)
-        }
+//        NavigationView {
+        TaskListView()
+            .environment(\.managedObjectContext,
+                         PersistenceController.preview.container.viewContext)
+//        }
         //        .environment(\.colorScheme, .dark)
     }
 }
