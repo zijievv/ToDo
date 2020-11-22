@@ -44,7 +44,8 @@ struct TaskDetailView: View {
             .toolbar {
                 ToolbarItem(placement: .principal) {
                     Text("Detail")
-                        .font(.system(.title3, design: .rounded))
+                        .font(.system(.title2, design: .rounded))
+                        .fontWeight(.medium)
                 }
             }
             .navigationBarItems(leading: cancel, trailing: done)
@@ -58,6 +59,7 @@ struct TaskDetailView: View {
             presentationMode.wrappedValue.dismiss()
         }) {
             Text("Done")
+                .font(.system(.headline, design: .rounded))
         }
         .disabled(taskVM.title.isEmpty)
     }
@@ -67,6 +69,7 @@ struct TaskDetailView: View {
             presentationMode.wrappedValue.dismiss()
         }) {
             Text("Cancel")
+                .font(.system(.headline, design: .rounded))
         }
     }
 

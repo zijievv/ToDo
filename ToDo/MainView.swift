@@ -51,5 +51,6 @@ struct MainView_Previews: PreviewProvider {
         MainView()
             .environment(\.managedObjectContext,
                          PersistenceController.preview.container.viewContext)
+//            .environment(\.colorScheme, .dark)
     }
 }

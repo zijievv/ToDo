@@ -17,6 +17,7 @@ struct TaskListView: View {
     private static var sortDescriptiors = [
         NSSortDescriptor(keyPath: \Task.isCompleted, ascending: true),
         NSSortDescriptor(keyPath: \Task.scheduledDate, ascending: false),
+
         NSSortDescriptor(keyPath: \Task.createdDate, ascending: true),
     ]
 
@@ -61,6 +62,7 @@ struct TaskListView: View {
                         }
 
                         Image(systemName: task.isImportant ? "star.fill" : "star")
+                            .font(Font.title3.weight(.semibold))
                             .foregroundColor(task.isImportant ? .orange : .gray)
                             .onTapGesture { toggleAndSaveImportance(of: task) }
                     }
@@ -87,7 +89,6 @@ struct TaskListView: View {
         VStack(alignment: .leading, spacing: 0) {
             Text(title)
                 .font(.system(.body, design: .rounded))
-                .frame(width: 260, height: 20, alignment: .leading)
 
             if let date = scheduledDate {
                 Text(date, formatter: dateFormatter)
@@ -105,9 +106,10 @@ struct TaskListView: View {
         }) {
             HStack {
                 Image(systemName: "plus.circle.fill")
+                    .font(.system(.title2, design: .rounded))
                 Text("New Reminder")
+                    .font(.system(.headline, design: .rounded))
             }
-            .font(.system(.headline, design: .rounded))
         }
     }
 
@@ -124,10 +126,12 @@ struct TaskListView: View {
 
     private var showCompletedTasks: some View {
         Button(action: {
-            showCompleted.toggle()
+            withAnimation { showCompleted.toggle() }
         }) {
-            Text(showCompleted ? "Hide Completed" : "Show Completed")
-                .font(.system(.headline, design: .rounded))
+            HStack {
+                Text(showCompleted ? "Hide Completed" : "Show Completed")
+            }
+            .font(.system(.headline, design: .rounded))
         }
     }
 
@@ -151,11 +155,11 @@ struct TaskListView: View {
 
 struct TaskListView_Previews: PreviewProvider {
     static var previews: some View {
-//        NavigationView {
-        TaskListView()
-            .environment(\.managedObjectContext,
-                         PersistenceController.preview.container.viewContext)
-//        }
-//                .environment(\.colorScheme, .dark)
+        NavigationView {
+            TaskListView()
+                .environment(\.managedObjectContext,
+                             PersistenceController.preview.container.viewContext)
+        }
+//        .environment(\.colorScheme, .dark)
     }
 }
