@@ -21,21 +21,21 @@ struct TaskListView: View {
     ]
 
     @FetchRequest(sortDescriptors: Self.sortDescriptiors, animation: .easeInOut)
-    private var tasks: FetchedResults<Task>
+    private var fetchedTasks: FetchedResults<Task>
 
     @ObservedObject var taskVM = TaskViewModel()
 
     @State private var showCompleted: Bool = false
     @State private var showTaskDetailView: Bool = false
 
-    private var filteredTasks: [Task] {
-        showCompleted ? tasks.map { $0 } : tasks.filter { !$0.isCompleted }
+    private var tasks: [Task] {
+        showCompleted ? fetchedTasks.map { $0 } : fetchedTasks.filter { !$0.isCompleted }
     }
 
     var body: some View {
         VStack {
             List {
-                ForEach(filteredTasks) { task in
+                ForEach(tasks) { task in
                     HStack {
                         Image(systemName: task.isCompleted ? "checkmark.circle.fill" : "circle")
                             .font(.title2)
@@ -48,25 +48,9 @@ struct TaskListView: View {
                                 .cornerRadius(8)
 
                             HStack {
-                                VStack(alignment: .leading, spacing: 0) {
-                                    Text(task.title!)
-                                        .font(.system(.body, design: .rounded))
-                                        .frame(width: 260, height: 20, alignment: .leading)
-
-                                    if let date = task.scheduledDate {
-                                        Text(date, formatter: dateFormatter)
-                                            .font(.caption)
-                                            .foregroundColor(Color(.systemGray))
-                                            .padding(.top, 3)
-                                    }
-                                }
-
+                                taskCellContent(title: task.title!,
+                                                scheduledDate: task.scheduledDate)
                                 Spacer()
-
-                                if task.isImportant {
-                                    Image(systemName: "star.fill")
-                                        .foregroundColor(.orange)
-                                }
                             }
                             .padding(10)
                         }
@@ -75,6 +59,10 @@ struct TaskListView: View {
                             taskVM.edit(task: task)
                             showTaskDetailView = true
                         }
+
+                        Image(systemName: task.isImportant ? "star.fill" : "star")
+                            .foregroundColor(task.isImportant ? .orange : .gray)
+                            .onTapGesture { toggleAndSaveImportance(of: task) }
                     }
                 }
                 .onDelete(perform: withAnimation { deleteItems })
@@ -95,6 +83,21 @@ struct TaskListView: View {
         }
     }
 
+    private func taskCellContent(title: String, scheduledDate: Date?) -> some View {
+        VStack(alignment: .leading, spacing: 0) {
+            Text(title)
+                .font(.system(.body, design: .rounded))
+                .frame(width: 260, height: 20, alignment: .leading)
+
+            if let date = scheduledDate {
+                Text(date, formatter: dateFormatter)
+                    .font(.caption)
+                    .foregroundColor(Color(.systemGray))
+                    .padding(.top, 3)
+            }
+        }
+    }
+
     private var addNewTask: some View {
         Button(action: {
             taskVM.resetAllAttributes()
@@ -109,7 +112,7 @@ struct TaskListView: View {
     }
 
     private func deleteItems(offsets: IndexSet) {
-        offsets.map { tasks[$0] }.forEach(viewContext.delete)
+        offsets.map { fetchedTasks[$0] }.forEach(viewContext.delete)
 
         do {
             try viewContext.save()
@@ -133,6 +136,11 @@ struct TaskListView: View {
         try! viewContext.save()
     }
 
+    private func toggleAndSaveImportance(of task: Task) {
+        task.isImportant.toggle()
+        try! viewContext.save()
+    }
+
     private let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateStyle = .short
@@ -148,6 +156,6 @@ struct TaskListView_Previews: PreviewProvider {
             .environment(\.managedObjectContext,
                          PersistenceController.preview.container.viewContext)
 //        }
-        //        .environment(\.colorScheme, .dark)
+//                .environment(\.colorScheme, .dark)
     }
 }
