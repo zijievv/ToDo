@@ -28,6 +28,9 @@ class LocalNotification: ObservableObject {
     }
 
     func scheduleNotification(of task: Task) {
+        guard let date = task.scheduledDate else { return }
+        guard date > Date() else { return }
+
         let content = UNMutableNotificationContent()
         let categoryIdentifier = "Delete Notification Type"
 
@@ -39,7 +42,7 @@ class LocalNotification: ObservableObject {
         content.categoryIdentifier = categoryIdentifier
 
         let trigger = UNTimeIntervalNotificationTrigger(
-            timeInterval: task.scheduledDate!.timeIntervalSinceNow,
+            timeInterval: date.timeIntervalSinceNow,
             repeats: false
         )
         let identifier = task.id!.uuidString

@@ -54,7 +54,7 @@ struct TaskDetailView: View {
 
     private var done: some View {
         Button(action: {
-            if taskVM.isScheduled { taskVM.scheduledDate = scheduledDate }
+            taskVM.scheduledDate = taskVM.isScheduled ? scheduledDate : nil
             taskVM.writeData(to: viewContext)
             presentationMode.wrappedValue.dismiss()
         }) {

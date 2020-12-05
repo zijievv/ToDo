@@ -37,9 +37,7 @@ class TaskViewModel: ObservableObject {
 
             try! context.save()
 
-            if updatedTask.scheduledDate != nil {
-                localNotification.scheduleNotification(of: updatedTask)
-            }
+            localNotification.scheduleNotification(of: updatedTask)
 
             return
         }
@@ -60,9 +58,7 @@ class TaskViewModel: ObservableObject {
             fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
         }
 
-        if newTask.scheduledDate != nil {
-            localNotification.scheduleNotification(of: newTask)
-        }
+        localNotification.scheduleNotification(of: newTask)
     }
 
     func edit(task: Task) {
@@ -74,6 +70,7 @@ class TaskViewModel: ObservableObject {
         isImportant = task.isImportant
         createdDate = task.createdDate!
         scheduledDate = task.scheduledDate
+        isScheduled = (task.scheduledDate != nil)
     }
 
     func resetAllAttributes() {
