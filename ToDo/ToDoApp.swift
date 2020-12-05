@@ -12,6 +12,8 @@ import SwiftUI
 
 @main
 struct ToDoApp: App {
+    @StateObject var notificationCenter = NotificationCenter()
+    @UIApplicationDelegateAdaptor private var appDelegate: AppDelegate
     let persistenceController = PersistenceController.shared
 
     var body: some Scene {

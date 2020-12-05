@@ -16,6 +16,11 @@
 		78640B962532C24300A0BF59 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78640B952532C24300A0BF59 /* Persistence.swift */; };
 		78640B992532C24300A0BF59 /* ToDo.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 78640B972532C24300A0BF59 /* ToDo.xcdatamodeld */; };
 		78640BB62532C44E00A0BF59 /* List+Separator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78640BAD2532C44E00A0BF59 /* List+Separator.swift */; };
+		787BF5C125794CDC008A7EF6 /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 787BF5C025794CDC008A7EF6 /* Date+Extension.swift */; };
+		787BF5EA257A93E2008A7EF6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 787BF5E9257A93E2008A7EF6 /* AppDelegate.swift */; };
+		787BF5EE257B7745008A7EF6 /* NotificationCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 787BF5ED257B7745008A7EF6 /* NotificationCenter.swift */; };
+		787BF5F2257B77A5008A7EF6 /* UIApplicationDelegate+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 787BF5F1257B77A5008A7EF6 /* UIApplicationDelegate+Extension.swift */; };
+		787BF5F6257B77BA008A7EF6 /* LocalNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 787BF5F5257B77BA008A7EF6 /* LocalNotification.swift */; };
 		78B1747525614A0D000027ED /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78B1747425614A0D000027ED /* MainView.swift */; };
 /* End PBXBuildFile section */
 
@@ -31,6 +36,11 @@
 		78640B982532C24300A0BF59 /* ToDo.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ToDo.xcdatamodel; sourceTree = "<group>"; };
 		78640B9A2532C24300A0BF59 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		78640BAD2532C44E00A0BF59 /* List+Separator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "List+Separator.swift"; sourceTree = "<group>"; };
+		787BF5C025794CDC008A7EF6 /* Date+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
+		787BF5E9257A93E2008A7EF6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		787BF5ED257B7745008A7EF6 /* NotificationCenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationCenter.swift; sourceTree = "<group>"; };
+		787BF5F1257B77A5008A7EF6 /* UIApplicationDelegate+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplicationDelegate+Extension.swift"; sourceTree = "<group>"; };
+		787BF5F5257B77BA008A7EF6 /* LocalNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalNotification.swift; sourceTree = "<group>"; };
 		78B1747425614A0D000027ED /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -65,15 +75,13 @@
 			isa = PBXGroup;
 			children = (
 				78640B8C2532C24300A0BF59 /* ToDoApp.swift */,
-				78B1747425614A0D000027ED /* MainView.swift */,
-				78640B8E2532C24300A0BF59 /* TaskListView.swift */,
-				785EF5ED2560389C00E5BA90 /* TaskDetailView.swift */,
+				787BF5F0257B777A008A7EF6 /* LocalNotification */,
+				787BF5FB257B7E08008A7EF6 /* View */,
 				78196738255D45D000D112F1 /* TaskViewModel.swift */,
-				78640B952532C24300A0BF59 /* Persistence.swift */,
-				78640BAD2532C44E00A0BF59 /* List+Separator.swift */,
+				787BF5FD257B7E25008A7EF6 /* Model */,
+				787BF5C025794CDC008A7EF6 /* Date+Extension.swift */,
 				78640B902532C24300A0BF59 /* Assets.xcassets */,
 				78640B9A2532C24300A0BF59 /* Info.plist */,
-				78640B972532C24300A0BF59 /* ToDo.xcdatamodeld */,
 				78640B922532C24300A0BF59 /* Preview Content */,
 			);
 			path = ToDo;
@@ -85,6 +93,37 @@
 				78640B932532C24300A0BF59 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		787BF5F0257B777A008A7EF6 /* LocalNotification */ = {
+			isa = PBXGroup;
+			children = (
+				787BF5E9257A93E2008A7EF6 /* AppDelegate.swift */,
+				787BF5F1257B77A5008A7EF6 /* UIApplicationDelegate+Extension.swift */,
+				787BF5ED257B7745008A7EF6 /* NotificationCenter.swift */,
+				787BF5F5257B77BA008A7EF6 /* LocalNotification.swift */,
+			);
+			path = LocalNotification;
+			sourceTree = "<group>";
+		};
+		787BF5FB257B7E08008A7EF6 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				78B1747425614A0D000027ED /* MainView.swift */,
+				78640B8E2532C24300A0BF59 /* TaskListView.swift */,
+				785EF5ED2560389C00E5BA90 /* TaskDetailView.swift */,
+				78640BAD2532C44E00A0BF59 /* List+Separator.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		787BF5FD257B7E25008A7EF6 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				78640B952532C24300A0BF59 /* Persistence.swift */,
+				78640B972532C24300A0BF59 /* ToDo.xcdatamodeld */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -157,13 +196,18 @@
 			buildActionMask = 2147483647;
 			files = (
 				78196739255D45D000D112F1 /* TaskViewModel.swift in Sources */,
+				787BF5F6257B77BA008A7EF6 /* LocalNotification.swift in Sources */,
 				78B1747525614A0D000027ED /* MainView.swift in Sources */,
+				787BF5EE257B7745008A7EF6 /* NotificationCenter.swift in Sources */,
 				785EF5EE2560389C00E5BA90 /* TaskDetailView.swift in Sources */,
 				78640B962532C24300A0BF59 /* Persistence.swift in Sources */,
+				787BF5F2257B77A5008A7EF6 /* UIApplicationDelegate+Extension.swift in Sources */,
 				78640B8F2532C24300A0BF59 /* TaskListView.swift in Sources */,
 				78640BB62532C44E00A0BF59 /* List+Separator.swift in Sources */,
 				78640B8D2532C24300A0BF59 /* ToDoApp.swift in Sources */,
 				78640B992532C24300A0BF59 /* ToDo.xcdatamodeld in Sources */,
+				787BF5EA257A93E2008A7EF6 /* AppDelegate.swift in Sources */,
+				787BF5C125794CDC008A7EF6 /* Date+Extension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

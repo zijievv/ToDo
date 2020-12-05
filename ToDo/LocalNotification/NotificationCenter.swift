@@ -11,7 +11,7 @@
 import SwiftUI
 
 class NotificationCenter: NSObject, ObservableObject {
-    var dumbData: UNNotificationResponse?
+    var notificationResponse: UNNotificationResponse?
 
     override init() {
         super.init()
@@ -34,7 +34,7 @@ extension NotificationCenter: UNUserNotificationCenterDelegate  {
         didReceive response: UNNotificationResponse,
         withCompletionHandler completionHandler: @escaping () -> Void
     ) {
-        dumbData = response
+        notificationResponse = response
     }
 
     func userNotificationCenter(_ center: UNUserNotificationCenter,

@@ -23,6 +23,8 @@ class TaskViewModel: ObservableObject {
 
     @Published var updatedTask: Task!
 
+    var localNotification = LocalNotification()
+
     func writeData(to context: NSManagedObjectContext) {
         // Update Task
         if updatedTask != nil {
@@ -34,6 +36,11 @@ class TaskViewModel: ObservableObject {
             updatedTask.scheduledDate = scheduledDate
 
             try! context.save()
+
+            if updatedTask.scheduledDate != nil {
+                localNotification.scheduleNotification(of: updatedTask)
+            }
+
             return
         }
 
@@ -51,6 +58,10 @@ class TaskViewModel: ObservableObject {
         } catch {
             let nsError = error as NSError
             fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+        }
+
+        if newTask.scheduledDate != nil {
+            localNotification.scheduleNotification(of: newTask)
         }
     }
 
