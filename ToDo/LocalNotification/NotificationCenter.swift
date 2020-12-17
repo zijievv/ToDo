@@ -19,12 +19,12 @@ class NotificationCenter: NSObject, ObservableObject {
     }
 }
 
-extension NotificationCenter: UNUserNotificationCenterDelegate  {
+extension NotificationCenter: UNUserNotificationCenterDelegate {
     func userNotificationCenter(
         _ center: UNUserNotificationCenter,
         willPresent notification: UNNotification,
         withCompletionHandler completionHandler:
-            @escaping (UNNotificationPresentationOptions) -> Void
+        @escaping (UNNotificationPresentationOptions) -> Void
     ) {
         //
     }

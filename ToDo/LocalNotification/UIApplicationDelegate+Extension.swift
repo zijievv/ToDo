@@ -25,4 +25,3 @@ extension UIApplicationDelegate {
         print("Failed to register for notifications: \(error.localizedDescription)")
     }
 }
-

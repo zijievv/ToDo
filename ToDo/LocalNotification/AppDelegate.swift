@@ -17,6 +17,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     ) -> Bool {
         return true
     }
+
     //No callback in simulator -- must use device to get valid push token
     func application(
         _ application: UIApplication,

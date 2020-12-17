@@ -8,16 +8,16 @@
 //  ================================================================================================
 //
 
-import SwiftUI
 import os
+import SwiftUI
 
 class LocalNotification: ObservableObject {
 //    let notificationCenter = UNUserNotificationCenter.current()
-    
+
     init() {
         UNUserNotificationCenter
             .current()
-            .requestAuthorization(options: [.alert, .sound]) { (allowed, error) in
+            .requestAuthorization(options: [.alert, .sound]) { allowed, _ in
                 //This callback does not trigger on main loop be careful
                 if allowed {
                     os_log(.debug, "Allowed")
@@ -51,7 +51,7 @@ class LocalNotification: ObservableObject {
                                             content: content,
                                             trigger: trigger)
 
-        UNUserNotificationCenter.current().add(request) { (error) in
+        UNUserNotificationCenter.current().add(request) { error in
             if let error = error {
                 print("Error \(error.localizedDescription)")
             }
